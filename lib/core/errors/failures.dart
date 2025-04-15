@@ -1,15 +1,15 @@
 abstract class Failure {
   final String message;
-  Failure({this.message = ''});
+  const Failure({required this.message});
 }
 
 class CacheFailure extends Failure {
-  CacheFailure({super.message});
+  const CacheFailure({required super.message});
 }
 
 class ServerFailure extends Failure {
-  ServerFailure({super.message});
+  const ServerFailure({required super.message});
 }
-class UnexpectedFailure extends Failure{
-  UnexpectedFailure({super.message});
+class NoDataFailure extends Failure{
+  const NoDataFailure({required super.message});
 }
