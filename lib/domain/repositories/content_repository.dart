@@ -1,13 +1,11 @@
-import '../entities/letter.dart';
-import '../entities/number.dart';
 import '../entities/animal.dart';
 import '../entities/color.dart';
 import '../entities/story.dart';
+import '../../core/usecases/usecase.dart';
+import '../../core/errors/failures.dart';
 
 abstract class ContentRepository {
-  Future<List<Letter>> getLetters();
-  Future<List<Number>> getNumbers();
-  Future<List<Animal>> getAnimals();
-  Future<List<Color>> getColors();
-  Future<List<Story>> getStories();
+  Either<Failure, List<Animal>> getAnimals();
+  Either<Failure, List<Color>> getColors();
+  Either<Failure, List<Story>> getStories();
 }
