@@ -1,19 +1,19 @@
 import 'package:equatable/equatable.dart';
 
 class Number extends Equatable {
-  final int value;
+  final String name;
   final String sound;
   final String image;
 
-  Number({
-    required this.value,
+  const Number({
+    required this.name,
     required this.sound,
     required this.image,
   });
 
   @override
   List<Object?> get props => [
-        value,
+        name,
         sound,
         image,
       ];

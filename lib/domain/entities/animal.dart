@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 
-class Animal extends Equatable {
+class Animal with EquatableMixin{
   final String name;
   final String sound;
   final String image;
@@ -12,7 +12,5 @@ class Animal extends Equatable {
   });
 
   @override
-  List<Object?> get props => [
-        name,sound,image
-      ];
+  List<Object?> get props => [name, sound, image];
 }

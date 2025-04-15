@@ -1,10 +1,9 @@
 import 'package:equatable/equatable.dart';
 
-class Letter extends Equatable {
-  final String name;
-  final String sound;
-  final String image;
-  
+class Letter with EquatableMixin {
+   String name;
+   String sound;
+   String image;
   const Letter({
     required this.name,
     required this.sound,
