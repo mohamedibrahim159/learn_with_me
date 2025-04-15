@@ -1,16 +1,18 @@
-import 'package:equatable/equatable.dart';
+import '../../core/errors/failures.dart';
+import '../../core/usecases/usecase.dart';
 import '../entities/letter.dart';
-import '../repositories/content_repository.dart';
+import '../repositories/letter_repository.dart';
 
-class GetLetters extends Equatable {
-  final ContentRepository contentRepository;
+class GetLetters extends UseCase<List<Letter>, NoParams> {
+  final LetterRepository letterRepository;
 
-  const GetLetters(this.contentRepository);
+  const GetLetters(this.letterRepository);
 
-  List<Letter> execute() {
-    return contentRepository.getLetters();
+  @override
+  Either<Failure, List<Letter>> call(NoParams params) async {
+    return await letterRepository.getLetters();
   }
 
   @override
-  List<Object?> get props => [contentRepository];
+  
 }

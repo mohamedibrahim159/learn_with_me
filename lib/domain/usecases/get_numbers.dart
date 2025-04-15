@@ -1,16 +1,16 @@
-import 'package:equatable/equatable.dart';
+import '../../core/usecases/usecase.dart';
+import '../../core/errors/failures.dart';
 import '../entities/number.dart';
-import '../repositories/content_repository.dart';
+import '../repositories/number_repository.dart';
 
-class GetNumbers extends Equatable {
-  final ContentRepository contentRepository;
+class GetNumbers extends UseCase<List<Number>, NoParams> {
+  final NumberRepository numberRepository;
 
-  const GetNumbers(this.contentRepository);
+  const GetNumbers(this.numberRepository);
 
-  List<Number> execute() {
-    return contentRepository.getNumbers();
-  }
-  
   @override
-  List<Object?> get props => [contentRepository];
+  Either<Failure, List<Number>> call(NoParams params) {
+    return numberRepository.getNumbers();
+  }
+
 }

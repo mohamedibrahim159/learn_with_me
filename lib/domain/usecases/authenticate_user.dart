@@ -1,16 +1,16 @@
-import 'package:equatable/equatable.dart';
+import '../../core/usecases/usecase.dart';
+import '../../core/errors/failures.dart';
 import '../entities/user.dart';
 import '../repositories/user_repository.dart';
 
-class AuthenticateUser extends Equatable {
+class AuthenticateUser extends UseCase<User, NoParams> {
   final UserRepository userRepository;
 
-  const AuthenticateUser({required this.userRepository});
-
-  Future<User> execute() async {
-    return await userRepository.authenticate();
-  }
+  AuthenticateUser({required this.userRepository});
 
   @override
-  List<Object?> get props => [userRepository];
+  Either<Failure, User> call(NoParams params) {
+    return userRepository.authenticateUser();
+  }
+
 }
