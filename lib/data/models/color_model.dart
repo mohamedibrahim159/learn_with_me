@@ -1,24 +1,25 @@
+import 'package:equatable/equatable.dart';
+import '../../domain/entities/color.dart';
 
-
-class LetterModel extends Letter with EquatableMixin {
+class ColorModel extends Color with EquatableMixin {
   final String name;
   final String sound;
   final String image;
 
-  const LetterModel({
+  const ColorModel({
     required this.name,
     required this.sound,
     required this.image,
   }) : super(name: name, sound: sound, image: image);
 
-  factory LetterModel.fromJson(Map<String, dynamic> json) {
-    return LetterModel(
+  factory ColorModel.fromJson(Map<String, dynamic> json) {
+    return ColorModel(
       name: json['name'],
       sound: json['sound'],
       image: json['image'],
     );
   }
-  
+
   Map<String, dynamic> toJson() {
     return {
       'name': name,

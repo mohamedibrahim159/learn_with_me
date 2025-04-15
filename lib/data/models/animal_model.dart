@@ -1,24 +1,25 @@
+import 'package:equatable/equatable.dart';
+import '../../../domain/entities/animal.dart';
 
-
-class LetterModel extends Letter with EquatableMixin {
+class AnimalModel extends Animal with EquatableMixin {
   final String name;
   final String sound;
   final String image;
 
-  const LetterModel({
+  const AnimalModel({
     required this.name,
     required this.sound,
     required this.image,
   }) : super(name: name, sound: sound, image: image);
 
-  factory LetterModel.fromJson(Map<String, dynamic> json) {
-    return LetterModel(
+  factory AnimalModel.fromJson(Map<String, dynamic> json) {
+    return AnimalModel(
       name: json['name'],
       sound: json['sound'],
       image: json['image'],
     );
   }
-  
+
   Map<String, dynamic> toJson() {
     return {
       'name': name,
