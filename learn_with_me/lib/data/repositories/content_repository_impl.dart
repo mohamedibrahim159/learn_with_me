@@ -18,7 +18,7 @@ class ContentRepositoryImpl implements ContentRepository {
   Future<Either<Failure, List<Animal>>> getAnimals() async {
     try {
       final result = await contentLocalDataSource.getAnimals();
-      final animals = result.map((e) => AnimalModel.fromJson(e)).toList();
+      final animals = result.map((e) => e.toEntity()).toList();
       return Right(animals);
     } on Exception catch (e) {
       return Left(ServerFailure(message: e.toString()));
@@ -29,7 +29,7 @@ class ContentRepositoryImpl implements ContentRepository {
   Future<Either<Failure, List<Color>>> getColors() async {
     try {
       final result = await contentLocalDataSource.getColors();
-      final colors = result.map((e) => ColorModel.fromJson(e)).toList();
+      final colors = result.map((e) => e.toEntity()).toList();
       return Right(colors);
     } on Exception catch (e) {
       return Left(ServerFailure(message: e.toString()));
@@ -40,7 +40,7 @@ class ContentRepositoryImpl implements ContentRepository {
   Future<Either<Failure, List<Story>>> getStories() async {
     try {
       final result = await contentLocalDataSource.getStories();
-      final stories = result.map((e) => StoryModel.fromJson(e)).toList();
+      final stories = result.map((e) => e.toEntity()).toList();
       return Right(stories);
     } on Exception catch (e) {
       return Left(ServerFailure(message: e.toString()));

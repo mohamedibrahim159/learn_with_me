@@ -1,5 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../core/errors/failures.dart';
+import '../../../domain/entities/letter.dart';
 import '../../../core/usecases/usecase.dart';
 import '../../../domain/usecases/get_letters.dart';
 
@@ -7,23 +8,33 @@ part 'letter_event.dart';
 part 'letter_state.dart';
 
 class LetterBloc extends Bloc<LetterEvent, LetterState> {
-  final GetLetters getLetters;
-  LetterBloc({required this.getLetters}) : super(LetterInitial()) {
-    on<GetLettersEvent>((event, emit) async {
-      emit(LetterLoading());
-      final result = await getLetters(NoParams());
-      result.fold(
-        (failure) => emit(LetterError(message: _mapFailureToMessage(failure))),
-        (letters) => emit(LetterLoaded(letters: letters)),
-      );
-    });
-    on<AddLetter>((event,emit){
-      //TODO : add logic here
-    });
-    on<DeleteLetter>((event,emit){
-      //TODO : add logic here
-    });
+  final GetLetters _getLetters;
+
+  LetterBloc({required GetLetters getLetters})
+      : _getLetters = getLetters,
+        super(LetterState.initial()) {
+    on<GetLettersEvent>(_onGetLetters);
   }
+
+  void _onGetLetters(GetLettersEvent event, Emitter<LetterState> emit) async {
+    emit(state.copyWith(isLoading: true, errorMessage: ''));
+    final failureOrLetters = await _getLetters(NoParams());
+    failureOrLetters.fold(
+      (failure) => emit(state.copyWith(
+        isLoading: false,
+        errorMessage: _mapFailureToMessage(failure),
+      )),
+      (letters) => emit(state.copyWith(
+        isLoading: false,
+        letters: letters,
+        errorMessage: '',
+      )),
+    );
+  }
+
+
+
+
 
   String _mapFailureToMessage(Failure failure) {
     switch (failure.runtimeType) {
