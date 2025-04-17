@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:learn_with_me/app/l10n/app_localizations.dart';
+import 'package:learn_with_me/presentation/blocs/color_bloc.dart';
 import 'package:learn_with_me/domain/entities/color.dart';
 import 'package:learn_with_me/core/constants/app_constants.dart';
 import 'package:learn_with_me/core/services/audio_service.dart';
@@ -9,10 +10,13 @@ import 'package:learn_with_me/presentation/blocs/color_bloc.dart';
 import 'package:learn_with_me/presentation/widgets/responsive_widget.dart';
 
 class ColorsScreen extends StatelessWidget {
+  final ColorBloc colorBloc = GetIt.I.get<ColorBloc>();
+
   final AudioService audioService;
   const ColorsScreen({super.key, required this.audioService});
 
   @override
+  
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => ColorBloc()..add(GetColorsEvent()),
@@ -118,20 +122,6 @@ class ColorsScreen extends StatelessWidget {
               },
             ),
           ),
-        ),
-      ),
-    );
-  }
-}
-
-                  );
-                },
-              );
-            }
-            return const Center(
-              child: Text('No Colors Found'),
-            );
-          },
         ),
       ),
     );

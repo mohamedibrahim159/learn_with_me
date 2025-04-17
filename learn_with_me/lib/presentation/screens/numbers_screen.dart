@@ -9,11 +9,14 @@ import 'package:learn_with_me/presentation/blocs/number_bloc.dart';
 import '../widgets/responsive_widget.dart';
 class NumbersScreen extends StatefulWidget {
   final AudioService audioService;
+  final NumberBloc numberBloc;
 
   const NumbersScreen({
     super.key,
     required this.audioService,
+    required this.numberBloc,
   });
+
 
   @override
   State<NumbersScreen> createState() => _NumbersScreenState();
@@ -22,63 +25,64 @@ class NumbersScreen extends StatefulWidget {
 
 class _NumbersScreenState extends State<NumbersScreen> {
   @override
-  void initState() {
-    context.read<NumberBloc>().add(GetNumbersEvent());
-    super.initState();
-  }
+    void initState() {
+      widget.numberBloc.add(GetNumbersEvent());
+      super.initState();
+    }
 
-  @override
-  Widget build(BuildContext context) {
-    return BlocBuilder<NumberBloc, NumberState>(
-      builder: (context, state) {
-        return Scaffold(
-          appBar: AppBar(
-            
-          title: Text(AppLocalizations.of(context).numbers),),
-          body: Builder(builder: (context) {
-            return ResponsiveWidget(
-              mobileWidget: Padding(
-                padding: const EdgeInsets.all(10),
-                child: Builder(builder: (context) {
-                  if (state.isLoading) {
-                    return const Center(child: CircularProgressIndicator());
-                  }
-                  if (state.errorMessage.isNotEmpty) {
-                    return Center(child: Text(state.errorMessage));
-                  }
-                  final numbers = state.numbers;
-                  return ListView.builder(
-                    itemCount: numbers.length,
-                    itemBuilder: (context, index) {
-                      final Number number = numbers[index];
-                      return ListTile(
-                        title: Text(number.number.toString()),
-                        trailing: IconButton(
-                          icon: const Icon(Icons.volume_up),
-                          onPressed: () {
-                            widget.audioService
-                                .playAudio(number.audioPath);
-                          },
-                        ),
-                      );
-                    },
-                  );
-                }),
-              ),
-              tabletWidget: Padding(
-                padding: const EdgeInsets.all(20),
-                child: GridView.builder(
-                    itemCount: state.numbers.length,
-                    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 2),
-                    itemBuilder: (context, index) {
-                      final Number number = state.numbers[index];
-                      return ListTile(
-                        title: Center(
-                          child: Text(
-                            number.number.toString(),
-                            style: const TextStyle(fontSize: 20),
+    @override
+    Widget build(BuildContext context) {
+      return BlocBuilder<NumberBloc, NumberState>(
+        bloc: widget.numberBloc,
+        builder: (context, state) {
+          return Scaffold(
+            appBar: AppBar(
+              
+            title: Text(AppLocalizations.of(context).numbers),),
+            body: Builder(builder: (context) {
+              return ResponsiveWidget(
+                mobileWidget: Padding(
+                  padding: const EdgeInsets.all(10),
+                  child: Builder(builder: (context) {
+                    if (state.isLoading) {
+                      return const Center(child: CircularProgressIndicator());
+                    }
+                    if (state.errorMessage.isNotEmpty) {
+                      return Center(child: Text(state.errorMessage));
+                    }
+                    final numbers = state.numbers;
+                    return ListView.builder(
+                      itemCount: numbers.length,
+                      itemBuilder: (context, index) {
+                        final Number number = numbers[index];
+                        return ListTile(
+                          title: Text(number.number.toString()),
+                          trailing: IconButton(
+                            icon: const Icon(Icons.volume_up),
+                            onPressed: () {
+                              widget.audioService
+                                  .playAudio(number.audioPath);
+                            },
                           ),
+                        );
+                      },
+                    );
+                  }),
+                ),
+                tabletWidget: Padding(
+                  padding: const EdgeInsets.all(20),
+                  child: GridView.builder(
+                      itemCount: state.numbers.length,
+                      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 2),
+                      itemBuilder: (context, index) {
+                        final Number number = state.numbers[index];
+                        return ListTile(
+                          title: Center(
+                            child: Text(
+                              number.number.toString(),
+                              style: const TextStyle(fontSize: 20),
+                            ),
                         ),
                          trailing: IconButton(
                           icon: const Icon(Icons.volume_up),
@@ -86,11 +90,11 @@ class _NumbersScreenState extends State<NumbersScreen> {
                             widget.audioService.playAudio(number.audioPath);
                           },
                         ),
-                      );
-                    }),
-              ),
-              desktopWidget: const SizedBox(),
-            );
+                        );
+                      }),
+                ),
+                desktopWidget: const SizedBox(),
+              );
               },
             );
           }),

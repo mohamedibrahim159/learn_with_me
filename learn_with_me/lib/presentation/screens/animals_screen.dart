@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:learn_with_me/app/l10n/app_localizations.dart';
 import 'package:learn_with_me/core/services/audio_service.dart';
@@ -8,58 +7,46 @@ import 'package:learn_with_me/presentation/blocs/animal_bloc.dart';
 import 'package:learn_with_me/presentation/widgets/responsive_widget.dart';
 
 class AnimalsScreen extends StatelessWidget {
+  final AnimalBloc bloc;
   final AudioService audioService;
-  AnimalsScreen({super.key}) : audioService = GetIt.I.get<AudioService>();
+  AnimalsScreen({super.key})
+      : audioService = GetIt.I.get<AudioService>(),
+        bloc = GetIt.I.get<AnimalBloc>();
 
-
+  
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => AnimalBloc()..add(GetAnimalsEvent()),
-      child: Scaffold(
-        appBar: AppBar(
-          title: const Text('Animals'),
-          title: Text(AppLocalizations.of(context)!.animals),        ),
-        body: BlocBuilder<AnimalBloc, AnimalState>(
-          builder: (context, state) {
-            if (state.isLoading) {
-              return const Center(child: CircularProgressIndicator());
-            }
-            if (state.errorMessage.isNotEmpty) {
-              return Center(child: Text(state.errorMessage));
-            }
-            final animals = state.animals;
-            return ResponsiveWidget(
-              mobileWidget: Padding(
-                padding: const EdgeInsets.all(10.0),
-                child: ListView.builder(
-                  itemCount: animals.length,
-                  itemBuilder: (context, index) {
-                    final animal = animals[index];
-                    return _buildAnimalItem(animal, context);
-                  },
-                ),
+    bloc.add(GetAnimalsEvent());
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(AppLocalizations.of(context)!.animals),
+      ),
+      body: BlocBuilder<AnimalBloc, AnimalState>(
+        bloc: bloc,
+        builder: (context, state) {
+          if (state.isLoading) {
+            return const Center(child: CircularProgressIndicator());
+          }
+          if (state.errorMessage.isNotEmpty) {
+            return Center(child: Text(state.errorMessage));
+          }
+          final animals = state.animals;
+          return ResponsiveWidget(
+            mobileWidget: Padding(
+              padding: const EdgeInsets.all(10.0),
+              child: ListView.builder(
+                itemCount: animals.length,
+                itemBuilder: (context, index) {
+                  final animal = animals[index];
+                  return _buildAnimalItem(animal, context);
+                },
               ),
-              tabletWidget: Padding(
-                padding: const EdgeInsets.all(20.0),
-                child: GridView.builder(
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2,
-                    crossAxisSpacing: 20.0,
-                    mainAxisSpacing: 20.0,
-                  ),
-                  itemCount: animals.length,
-                  itemBuilder: (context, index) {
-                    final animal = animals[index];
-                    return _buildAnimalItem(animal, context);
-                  },
-                ),
-              ),
-              desktopWidget: const Placeholder(),
-            );
-          },
-        ),
+            ),
+            tabletWidget: const Placeholder(),
+            desktopWidget: const Placeholder(),
+          );
+        },
       ),
     );
   }
@@ -74,4 +61,3 @@ class AnimalsScreen extends StatelessWidget {
             title: Text(animal.name),
           );
   }
-}
