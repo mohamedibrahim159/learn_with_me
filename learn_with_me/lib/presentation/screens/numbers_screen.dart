@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:learn_with_me/app/l10n/app_localizations.dart';
 import 'package:learn_with_me/domain/entities/number.dart';
+
 import 'package:learn_with_me/presentation/blocs/number_bloc.dart';
 
 import '../widgets/responsive_widget.dart';
@@ -25,7 +27,7 @@ class _NumbersScreenState extends State<NumbersScreen> {
         return Scaffold(
           appBar: AppBar(
             title: const Text('Numbers'),
-          ),
+          title: Text(AppLocalizations.of(context).numbers),),
           body: Builder(builder: (context) {
             return ResponsiveWidget(
               mobileWidget: Padding(

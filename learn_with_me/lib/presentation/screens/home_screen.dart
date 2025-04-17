@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:learn_with_me/app/l10n/app_localizations.dart';
-import 'package:learn_with_me/app/l10n/app_localizations_helper.dart';
 import 'package:learn_with_me/core/constants/app_assets.dart';
+import 'package:learn_with_me/presentation/blocs/auth_bloc.dart';
 import 'package:learn_with_me/core/constants/app_colors.dart';
 import 'package:learn_with_me/core/constants/app_constants.dart';
 import 'package:learn_with_me/presentation/widgets/responsive_widget.dart';
@@ -17,35 +17,14 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreen extends State<HomeScreen> {
   final List<Map<String, dynamic>> _sections = [
-    {
-      'title': 'Letters',
-      'image': AppAssets.logoPath,
-      'route': '/letters',
-    },
-    {
-      'title': 'number',
-      'image': AppAssets.logoPath,
-      'route': '/numbers',
-    },
-    {
-      'title': 'Animals',
-      'image': AppAssets.logoPath,
-      'route': '/animals',
-    },
-    {
-      'title': 'Colors',
-      'image': AppAssets.logoPath,
-      'route': '/colors',
-    },
+    {'title': 'Letters', 'image': AppAssets.logoPath, 'route': '/letters'},
+    {'title': 'number', 'image': AppAssets.logoPath, 'route': '/numbers'},
+    {'title': 'Animals', 'image': AppAssets.logoPath, 'route': '/animals'},
+    {'title': 'Colors', 'image': AppAssets.logoPath, 'route': '/colors'},
     {
       'title': 'story',
       'image': AppAssets.storyImagePath,
-      'route': '/stories',
-    },
-   {
-      'title': 'logout',
-      'image': AppAssets.logoPath,
-      'route': '/login',
+      'route': '/stories'
     },
   ];
 
@@ -55,26 +34,42 @@ class _HomeScreen extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(
-          title: Text(AppConstants.appName),
-        ),
-        body: Column(
-          children: [
-            Expanded(
-              child: _buildSection(
-                  context, 'For Learners', _buildLearnersSection),
-            ),
-            Expanded(
-              child: _buildSection(
-                  context, 'For Parents', _buildParentsSection),
-            ),
-          ],
-        ));
+    final localizations = AppLocalizations.of(context)!;
+    return BlocProvider<AuthBloc>(
+      create: (context) => GetIt.I.get<AuthBloc>(),
+      child: Scaffold(
+          appBar: AppBar(
+            title: Text(AppConstants.appName),
+          ),
+          body: Column(
+            children: [
+              Expanded(
+                child: _buildSection(
+                    context,
+                    localizations.translate('For Learners'),
+                    _buildLearnersSection),
+              ),
+              Expanded(
+                child: _buildSection(
+                    context,
+                    localizations.translate('For Parents'),
+                    _buildParentsSection),
+              ),
+            ],
+          )),
+    );
   }
 
-  Widget _buildSection(
-      BuildContext context, String title, Widget Function(BuildContext) builder) {
+  Widget _buildSection(BuildContext context, String title,
+      Widget Function(BuildContext) builder) {
+
+      final List<String> titleParts = title.split(' ');
+    if(titleParts.length > 1){
+       title = titleParts[1];
+    }
+    else{
+       title = titleParts[0];
+    }
     return Column(
       children: [
         Text(
@@ -92,12 +87,14 @@ class _HomeScreen extends State<HomeScreen> {
         itemCount: _sections.length - 1,
         itemBuilder: (context, index) {
           return ListTile(
-            leading: Image(image: AssetImage(_sections[index]['image'])),
-            title: Text(AppLocalizations.of(context)!
-                .translate(_sections[index]['title'])),
-            onTap: () =>
-                _navigateToSection(context, _sections[index]['route']),
-          );
+              leading: Image(image: AssetImage(_sections[index]['image'])),
+              title: Text(AppLocalizations.of(context)!
+                  .translate(_sections[index]['title'])),
+              onTap: () => _navigateToSection(
+                    context,
+                    _sections[index]['route'],
+                  )
+                  );
         },
       ),
       tabletWidget: GridView.builder(
@@ -107,13 +104,14 @@ class _HomeScreen extends State<HomeScreen> {
         ),
         itemCount: _sections.length - 1,
         itemBuilder: (context, index) {
+          final String sectionTitle = AppLocalizations.of(context)!
+              .translate(_sections[index]['title']);
           return ElevatedButton(
             onPressed: () =>
                 _navigateToSection(context, _sections[index]['route']),
             style: ElevatedButton.styleFrom(
-              backgroundColor: AppColors.secondaryColor,
-              foregroundColor: AppColors.primaryColor,
-            ),
+                backgroundColor: AppColors.secondaryColor,
+                foregroundColor: AppColors.primaryColor),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -121,8 +119,7 @@ class _HomeScreen extends State<HomeScreen> {
                   image: AssetImage(_sections[index]['image']),
                   width: 50,
                   height: 50,
-                ),
-                Text(AppLocalizations.of(context)!
+                ),Text(
                     .translate(_sections[index]['title'])),
               ],
             ),
@@ -136,6 +133,8 @@ class _HomeScreen extends State<HomeScreen> {
         ),
         itemCount: _sections.length - 1,
         itemBuilder: (context, index) {
+          final String sectionTitle = AppLocalizations.of(context)!
+              .translate(_sections[index]['title']);
           return ElevatedButton(
             onPressed: () =>
                 _navigateToSection(context, _sections[index]['route']),
@@ -144,10 +143,11 @@ class _HomeScreen extends State<HomeScreen> {
                 foregroundColor: AppColors.primaryColor),
             child: Column(children: [
               Image(image: AssetImage(_sections[index]['image'])),
-              Text(AppLocalizations.of(context)!
-                  .translate(_sections[index]['title'])),
+              Text(
+                sectionTitle,
+              ),
             ]),
-          ),
+          );
         },
       ),
     );
@@ -155,17 +155,17 @@ class _HomeScreen extends State<HomeScreen> {
 
   Widget _buildParentsSection(BuildContext context) {
     return Center(
-      child: BlocProvider<AuthBloc>(
-        create: (context) => GetIt.I.get<AuthBloc>(),
+      child: BlocListener<AuthBloc, AuthState>(
+        listener: (context, state) {},
         child: ElevatedButton(
-          onPressed: () {
-            GetIt.I.get<AuthBloc>().add(const LogoutEvent());
-          },
-          style: ElevatedButton.styleFrom(
-              backgroundColor: AppColors.secondaryColor,
-              foregroundColor: AppColors.primaryColor),
-          child: Text(AppLocalizations.of(context)!.translate('logout')),
-        ),
+            onPressed: () {
+              GetIt.I.get<AuthBloc>().add(const LogoutEvent());
+            },
+            style: ElevatedButton.styleFrom(
+                backgroundColor: AppColors.secondaryColor,
+                foregroundColor: AppColors.primaryColor),
+            child: Text(AppLocalizations.of(context)!.translate('logout')),
+          ),
       ),
     );
   }

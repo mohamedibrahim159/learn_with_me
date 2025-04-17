@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:learn_with_me/app/l10n/app_localizations.dart';
 import 'package:learn_with_me/domain/entities/color.dart';
+import 'package:learn_with_me/core/constants/app_constants.dart';
 import 'package:learn_with_me/presentation/blocs/color_bloc.dart';
 import 'package:learn_with_me/presentation/widgets/responsive_widget.dart';
 
@@ -14,7 +16,7 @@ class ColorsScreen extends StatelessWidget {
       child: Scaffold(
         appBar: AppBar(
           title: const Text('Colors Screen'),
-        ),
+        title: Text(AppLocalizations.of(context)!.colorsScreen),
         body: ResponsiveWidget(
           mobileWidget: Padding(
             padding: const EdgeInsets.all(10.0),

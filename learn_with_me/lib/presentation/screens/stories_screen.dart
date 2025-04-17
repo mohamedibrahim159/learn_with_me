@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:learn_with_me/domain/entities/story.dart';
+import 'package:learn_with_me/app/l10n/app_localizations.dart';
 import 'package:learn_with_me/presentation/blocs/story_bloc.dart';
 import 'package:learn_with_me/presentation/widgets/responsive_widget.dart';
 
@@ -16,7 +17,7 @@ class StoriesScreen extends StatelessWidget {
       child: Scaffold(
         appBar: AppBar(
           title: const Text('Stories'),
-        ),
+              title: Text(AppLocalizations.of(context)!.stories),),
         body: BlocBuilder<StoryBloc, StoryState>(
           builder: (context, state) {
             if (state.isLoading) {

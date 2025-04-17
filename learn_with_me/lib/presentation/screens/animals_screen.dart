@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:learn_with_me/core/constants/app_assets.dart';
+import 'package:learn_with_me/app/l10n/app_localizations.dart';
+import 'package:get_it/get_it.dart';
 import 'package:learn_with_me/domain/entities/animal.dart';
 import 'package:learn_with_me/presentation/blocs/animal_bloc.dart';
 import 'package:learn_with_me/presentation/widgets/responsive_widget.dart';
@@ -15,7 +16,7 @@ class AnimalsScreen extends StatelessWidget {
       child: Scaffold(
         appBar: AppBar(
           title: const Text('Animals'),
-        ),
+          title: Text(AppLocalizations.of(context)!.animals),        ),
         body: BlocBuilder<AnimalBloc, AnimalState>(
           builder: (context, state) {
             if (state.isLoading) {
