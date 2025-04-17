@@ -1,17 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:learn_with_me/app/l10n/app_localizations.dart';
+import 'package:learn_with_me/core/services/audio_service.dart';
 import 'package:learn_with_me/domain/entities/number.dart';
 
 import 'package:learn_with_me/presentation/blocs/number_bloc.dart';
 
 import '../widgets/responsive_widget.dart';
 class NumbersScreen extends StatefulWidget {
-  const NumbersScreen({super.key});
+  final AudioService audioService;
+
+  const NumbersScreen({
+    super.key,
+    required this.audioService,
+  });
 
   @override
   State<NumbersScreen> createState() => _NumbersScreenState();
 }
+
 
 class _NumbersScreenState extends State<NumbersScreen> {
   @override
@@ -26,7 +33,7 @@ class _NumbersScreenState extends State<NumbersScreen> {
       builder: (context, state) {
         return Scaffold(
           appBar: AppBar(
-            title: const Text('Numbers'),
+            
           title: Text(AppLocalizations.of(context).numbers),),
           body: Builder(builder: (context) {
             return ResponsiveWidget(
@@ -45,8 +52,14 @@ class _NumbersScreenState extends State<NumbersScreen> {
                     itemBuilder: (context, index) {
                       final Number number = numbers[index];
                       return ListTile(
-                        //leading: Image.asset(number.),
                         title: Text(number.number.toString()),
+                        trailing: IconButton(
+                          icon: const Icon(Icons.volume_up),
+                          onPressed: () {
+                            widget.audioService
+                                .playAudio(number.audioPath);
+                          },
+                        ),
                       );
                     },
                   );
@@ -59,10 +72,19 @@ class _NumbersScreenState extends State<NumbersScreen> {
                     gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                         crossAxisCount: 2),
                     itemBuilder: (context, index) {
-                      return Center(
-                        child: Text(
-                          state.numbers[index].number.toString(),
-                          style: const TextStyle(fontSize: 20),
+                      final Number number = state.numbers[index];
+                      return ListTile(
+                        title: Center(
+                          child: Text(
+                            number.number.toString(),
+                            style: const TextStyle(fontSize: 20),
+                          ),
+                        ),
+                         trailing: IconButton(
+                          icon: const Icon(Icons.volume_up),
+                          onPressed: () {
+                            widget.audioService.playAudio(number.audioPath);
+                          },
                         ),
                       );
                     }),

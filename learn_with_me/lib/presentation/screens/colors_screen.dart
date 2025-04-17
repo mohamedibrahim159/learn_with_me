@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get_it/get_it.dart';
 import 'package:learn_with_me/app/l10n/app_localizations.dart';
 import 'package:learn_with_me/domain/entities/color.dart';
 import 'package:learn_with_me/core/constants/app_constants.dart';
+import 'package:learn_with_me/core/services/audio_service.dart';
 import 'package:learn_with_me/presentation/blocs/color_bloc.dart';
 import 'package:learn_with_me/presentation/widgets/responsive_widget.dart';
 
 class ColorsScreen extends StatelessWidget {
-  const ColorsScreen({super.key});
+  final AudioService audioService;
+  const ColorsScreen({super.key, required this.audioService});
 
   @override
   Widget build(BuildContext context) {
@@ -34,6 +37,11 @@ class ColorsScreen extends StatelessWidget {
                     itemBuilder: (context, index) {
                       final Color color = state.colors[index];
                       return ListTile(
+                          trailing: IconButton(
+                            icon: const Icon(Icons.volume_up),
+                            onPressed: () {
+                              audioService.playAudio(color.audioPath);
+                            },
                         leading: Container(
                           width: 40,
                           height: 40,
@@ -43,6 +51,7 @@ class ColorsScreen extends StatelessWidget {
                           ),
                         ),
                         title: Text(color.name),
+                        )
                       );
                     },
                   );
@@ -69,7 +78,15 @@ class ColorsScreen extends StatelessWidget {
                    itemCount: state.colors.length,
                    itemBuilder: (context, index) {
                       final Color color = state.colors[index];
-                      return Center(child: Text(color.name));
+                      return ListTile(
+                          trailing: IconButton(
+                            icon: const Icon(Icons.volume_up),
+                            onPressed: () {
+                              audioService.playAudio(color.audioPath);
+                            },
+                          ),
+                          title: Text(color.name),
+                        );
                   },
                 );
                 }

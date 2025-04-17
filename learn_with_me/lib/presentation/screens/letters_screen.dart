@@ -3,14 +3,20 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:learn_with_me/app/l10n/app_localizations.dart';
 import 'package:learn_with_me/domain/entities/letter.dart';
 import 'package:learn_with_me/presentation/blocs/letter_bloc.dart';
+import 'package:learn_with_me/core/services/audio_service.dart';
 import 'package:learn_with_me/presentation/widgets/responsive_widget.dart';
 import 'package:get_it/get_it.dart';
 
 class LettersScreen extends StatefulWidget {
-  const LettersScreen({super.key});
+  final AudioService audioService;
+  const LettersScreen({super.key, required this.audioService});
 
   @override
   State<LettersScreen> createState() => _LettersScreenState();
+}
+
+
+
 }
 
 class _LettersScreenState extends State<LettersScreen> {
@@ -55,20 +61,32 @@ class _LettersScreenState extends State<LettersScreen> {
   }
 
   Widget _buildList(List<Letter> letters) {
-    return ListView.builder(
-      itemCount: letters.length,
-      itemBuilder: (context, index) => ListTile(
-        title: Text(letters[index].letter),
-      ),
-    );
+      return ListView.builder(
+        itemCount: letters.length,
+        itemBuilder: (context, index) {
+          final letter = letters[index];
+          return ListTile(
+            title: Text(letter.letter),
+            trailing: IconButton(
+              icon: const Icon(Icons.volume_up),
+              onPressed: () {
+                widget.audioService.playAudio(letter.audioPath);
+              },
+            ),
+          );
+        },
+      );
   }
 
   Widget _buildGrid(List<Letter> letters, int crossAxisCount) {
-    return GridView.builder(
-      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: crossAxisCount),
-      itemCount: letters.length,
-      itemBuilder: (context, index) => Center(child: Text(letters[index].letter)),
-    );
+    return GridView.builder(gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: crossAxisCount),
+        itemCount: letters.length,
+        itemBuilder: (context, index) {
+          final letter = letters[index];
+          return Center(child: IconButton(icon: const Icon(Icons.volume_up), onPressed: (){
+             widget.audioService.playAudio(letter.audioPath);
+          }, child: Text(letter.letter)));
+        });
   }
 }
