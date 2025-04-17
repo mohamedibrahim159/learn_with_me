@@ -20,7 +20,6 @@ class _HomeScreen extends State<HomeScreen> {
     {'title': 'Letters', 'image': AppAssets.logoPath, 'route': '/letters'},
     {'title': 'number', 'image': AppAssets.logoPath, 'route': '/numbers'},
     {'title': 'Animals', 'image': AppAssets.logoPath, 'route': '/animals'},
-    {'title': 'Colors', 'image': AppAssets.logoPath, 'route': '/colors'},
     {
       'title': 'story',
       'image': AppAssets.storyImagePath,
@@ -84,14 +83,14 @@ class _HomeScreen extends State<HomeScreen> {
   Widget _buildLearnersSection(BuildContext context) {
     return ResponsiveWidget(
       mobileWidget: ListView.builder(
-        itemCount: _sections.length - 1,
+        itemCount: _sections.length,
         itemBuilder: (context, index) {
+          if (_sections[index]['title'] == "Colors") return const SizedBox();
           return ListTile(
               leading: Image(image: AssetImage(_sections[index]['image'])),
               title: Text(AppLocalizations.of(context)!
                   .translate(_sections[index]['title'])),
-              onTap: () => _navigateToSection(
-                    context,
+              onTap: () => _navigateToSection(context,
                     _sections[index]['route'],
                   )
                   );
@@ -102,13 +101,15 @@ class _HomeScreen extends State<HomeScreen> {
           crossAxisCount: 2,
           childAspectRatio: 1.5,
         ),
-        itemCount: _sections.length - 1,
+        itemCount: _sections.length,
         itemBuilder: (context, index) {
+           if (_sections[index]['title'] == "Colors") return const SizedBox();
           final String sectionTitle = AppLocalizations.of(context)!
               .translate(_sections[index]['title']);
           return ElevatedButton(
-            onPressed: () =>
-                _navigateToSection(context, _sections[index]['route']),
+            onPressed: () => _navigateToSection(
+                context, _sections[index]['route']
+            ),
             style: ElevatedButton.styleFrom(
                 backgroundColor: AppColors.secondaryColor,
                 foregroundColor: AppColors.primaryColor),
@@ -121,8 +122,7 @@ class _HomeScreen extends State<HomeScreen> {
                   height: 50,
                 ),Text(
                     .translate(_sections[index]['title'])),
-              ],
-            ),
+              ]),
           );
         },
       ),
@@ -131,13 +131,15 @@ class _HomeScreen extends State<HomeScreen> {
           crossAxisCount: 3,
           childAspectRatio: 1.5,
         ),
-        itemCount: _sections.length - 1,
+        itemCount: _sections.length,
         itemBuilder: (context, index) {
+             if (_sections[index]['title'] == "Colors") return const SizedBox();
           final String sectionTitle = AppLocalizations.of(context)!
               .translate(_sections[index]['title']);
           return ElevatedButton(
-            onPressed: () =>
-                _navigateToSection(context, _sections[index]['route']),
+            onPressed: () => _navigateToSection(
+                context, _sections[index]['route']
+            ),
             style: ElevatedButton.styleFrom(
                 backgroundColor: AppColors.secondaryColor,
                 foregroundColor: AppColors.primaryColor),
