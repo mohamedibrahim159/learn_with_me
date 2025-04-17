@@ -1,6 +1,4 @@
 import 'package:bloc/bloc.dart';
-import 'package:equatable/equatable.dart';
-import '../../domain/entities/story.dart';
 import '../../domain/usecases/get_stories.dart';
 
 part 'story_event.dart';

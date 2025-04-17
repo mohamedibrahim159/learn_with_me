@@ -1,6 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../domain/entities/color.dart';
-import '../../domain/usecases/get_colors.dart';
 import '../../core/usecases/usecase.dart';
 import '../../core/errors/failures.dart';
 

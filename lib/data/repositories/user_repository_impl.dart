@@ -15,7 +15,7 @@ class UserRepositoryImpl implements UserRepository {
     try {
       final result = await localDataSource.authenticateUser();
       return Right(UserModel.fromJson(result));
-    } on Exception catch (e) {
+    } on Exception {
         return const Left(ServerFailure(message: ''));
     }
   }

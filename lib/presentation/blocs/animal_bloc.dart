@@ -1,6 +1,4 @@
 import 'package:bloc/bloc.dart';
-import 'package:equatable/equatable.dart';
-import '../../domain/entities/animal.dart';
 import '../../domain/usecases/get_animals.dart';
 
 part 'animal_event.dart';

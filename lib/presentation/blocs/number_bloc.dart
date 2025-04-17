@@ -1,6 +1,4 @@
 import 'package:bloc/bloc.dart';
-import 'package:equatable/equatable.dart';
-import '../../domain/entities/number.dart';
 import '../../domain/usecases/get_numbers.dart';
 
 part 'number_event.dart';

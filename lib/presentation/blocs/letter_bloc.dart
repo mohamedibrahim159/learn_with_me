@@ -1,8 +1,6 @@
-import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../core/errors/failures.dart';
 import '../../../core/usecases/usecase.dart';
-import '../../../domain/entities/letter.dart';
 import '../../../domain/usecases/get_letters.dart';
 
 part 'letter_event.dart';

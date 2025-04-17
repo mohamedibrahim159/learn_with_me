@@ -1,6 +1,4 @@
 import 'package:bloc/bloc.dart';
-import 'package:equatable/equatable.dart';
-import '../../domain/entities/user.dart';
 import '../../domain/usecases/authenticate_user.dart';
 
 part 'auth_event.dart';
