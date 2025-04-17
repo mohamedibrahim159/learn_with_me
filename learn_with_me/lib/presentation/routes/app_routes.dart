@@ -8,9 +8,10 @@ import '../screens/stories_screen.dart'; // Import StoriesScreen
 import '../screens/login_screen.dart'; // Import LoginScreen
 
 class AppRoutes {
-  static const String initialRoute = '/'; // Define initial route
+  static const String initialRoute = '/login'; // Define initial route
+  static const String home = '/home';
   static Map<String, WidgetBuilder> routes = { // Define routes map
-    '/': (context) => const HomeScreen(), // Route for HomeScreen
+    home: (context) => const HomeScreen(), // Route for HomeScreen
     '/letters': (context) => const LettersScreen(), // Route for LettersScreen
     '/numbers': (context) => const NumbersScreen(), // Route for NumbersScreen
     '/animals': (context) => const AnimalsScreen(), // Route for AnimalsScreen
