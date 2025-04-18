@@ -3,7 +3,6 @@ import 'package:get_it/get_it.dart';
 import 'package:learn_with_me/app/configure_dependencies.dart';
 import 'package:learn_with_me/core/services/firebase_service.dart';
 import 'package:learn_with_me/presentation/routes/app_routes.dart';
-import 'package:learn_with_me/presentation/screens/home_screen.dart';
 
 final GetIt getIt = GetIt.instance;
 
@@ -22,7 +21,6 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       routes: AppRoutes.routes,
       initialRoute: AppRoutes.initialRoute,
-      home: const HomeScreen(),
     );
   }
 }

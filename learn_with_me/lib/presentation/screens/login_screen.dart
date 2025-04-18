@@ -1,63 +1,71 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
-import 'package:learn_with_me/app/l10n/app_localizations.dart';
 import 'package:learn_with_me/presentation/blocs/auth_bloc.dart';
 import 'package:learn_with_me/presentation/routes/app_routes.dart';
-import 'package:learn_with_me/presentation/widgets/responsive_widget.dart';
 
 class LoginScreen extends StatelessWidget {
-  LoginScreen({super.key});
-  final AuthBloc authBloc = GetIt.I.get<AuthBloc>();
+  LoginScreen({Key? key}) : super(key: key);
+
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: BlocListener<AuthBloc, AuthState>(
-        bloc: authBloc,
-        listener: (context, state) {
-          if (state.user != null) {
-            Navigator.pushReplacementNamed(context, AppRoutes.home);
-          }
-          if (state.errorMessage != null) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text(state.errorMessage!),
-              ),
-            );
-          }
-        },
-        child: ResponsiveWidget(
-          mobileWidget: _buildLoginButton(context),
-          tabletWidget: SizedBox(
-            width: 400,
-            child: _buildLoginButton(context),
-          ),
-          desktopWidget: SizedBox(
-            width: 400,
-            child: _buildLoginButton(context),
-            ),
-          ),
-        ),
+      appBar: AppBar(
+        title: const Text('Login'),
       ),
-    );
-  }
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            TextField(
+              controller: _emailController,
+              decoration: const InputDecoration(
+                labelText: 'Email',
+              ),
+              keyboardType: TextInputType.emailAddress,
+            ),
+            const SizedBox(height: 20),
+            TextField(
+              controller: _passwordController,
+              decoration: const InputDecoration(
+                labelText: 'Password',
+              ),
+              obscureText: true,
+            ),
+            const SizedBox(height: 30),
+            ElevatedButton(
+              onPressed: () {
+                final email = _emailController.text;
+                final password = _passwordController.text;
+                if(email.isEmpty || password.isEmpty){
+                  print('Email and password are required');
+                  return;
+                }
+                print('login');
 
-  Widget _buildLoginButton(BuildContext context) {
-    final localizations = AppLocalizations.of(context);
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Text(localizations.loginAsGuest),
-          ElevatedButton(
-            onPressed: () {
-              authBloc.add(const AnonymousLoginEvent());
-            },
-            child: Text(localizations.login),
-          ),
+              },
+              child: const Text('Login'),
+            ),
+          ],
         ),
       ),
     );
   }
 }
+
+class _Empty extends StatelessWidget {
+  const _Empty();
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+    );
+          ),
+        ),
+      ),
+    );
+  }

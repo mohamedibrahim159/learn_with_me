@@ -1,20 +1,20 @@
 import 'package:flutter/material.dart';
-import '../screens/home_screen.dart'; // Import HomeScreen
-import '../screens/letters_screen.dart'; // Import LettersScreen
-import '../screens/numbers_screen.dart'; // Import NumbersScreen
-import '../screens/animals_screen.dart'; // Import AnimalsScreen
-import '../screens/stories_screen.dart'; // Import StoriesScreen
-import '../screens/login_screen.dart'; // Import LoginScreen
+import '../screens/home_screen.dart';
+import '../screens/letters_screen.dart';
+import '../screens/numbers_screen.dart';
+import '../screens/animals_screen.dart';
+import '../screens/stories_screen.dart';
+import '../screens/login_screen.dart';
 
 class AppRoutes {
-  static const String initialRoute = '/login'; // Define initial route
+  static const String initialRoute = '/login';
   static const String home = '/home';
-  static Map<String, WidgetBuilder> routes = { // Define routes map
-    home: (context) => const HomeScreen(), // Route for HomeScreen
-    '/letters': (context) => const LettersScreen(), // Route for LettersScreen
-    '/numbers': (context) => const NumbersScreen(), // Route for NumbersScreen
-    '/animals': (context) => const AnimalsScreen(), // Route for AnimalsScreen
-    '/stories': (context) => const StoriesScreen(), // Route for StoriesScreen
-    '/login': (context) => const LoginScreen(), // Route for LoginScreen
+  static Map<String, WidgetBuilder> routes = {
+    '/login': (context) => const LoginScreen(),
+    home: (context) => const HomeScreen(),
+    '/letters': (context) => const LettersScreen(),
+    '/numbers': (context) => const NumbersScreen(),
+    '/animals': (context) => const AnimalsScreen(),
+    '/stories': (context) => const StoriesScreen(),
   };
 }
