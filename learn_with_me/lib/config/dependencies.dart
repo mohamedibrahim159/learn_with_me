@@ -1,6 +1,10 @@
 import 'package:get_it/get_it.dart';
+import 'package:learn_with_me/core/services/auth_service.dart';
 import 'package:learn_with_me/core/services/audio_service.dart';
+import 'package:learn_with_me/core/services/firebase_service.dart';
 import 'package:learn_with_me/data/datasources/content_local_data_source_impl.dart';
+import 'package:learn_with_me/data/datasources/user_local_data_source_impl.dart';
+import 'package:learn_with_me/data/datasources/content_local_datasource.dart';
 import 'package:learn_with_me/data/datasources/letter_local_data_source_impl.dart';
 import 'package:learn_with_me/data/datasources/number_local_data_source_impl.dart';
 import 'package:learn_with_me/data/datasources/user_local_data_source.dart';
@@ -15,6 +19,7 @@ import 'package:learn_with_me/domain/repositories/user_repository.dart';
 import 'package:learn_with_me/domain/usecases/authenticate_user.dart';
 import 'package:learn_with_me/domain/usecases/get_animals.dart';
 import 'package:learn_with_me/domain/usecases/get_colors.dart';
+import 'package:learn_with_me/domain/usecases/get_colors.dart';
 import 'package:learn_with_me/domain/usecases/get_letters.dart';
 import 'package:learn_with_me/domain/usecases/get_numbers.dart';
 import 'package:learn_with_me/domain/usecases/get_stories.dart';
@@ -28,7 +33,15 @@ import 'package:learn_with_me/presentation/blocs/story_bloc.dart';
 final GetIt getIt = GetIt.instance;
 
 void configureDependencies() {
+  
+  getIt.registerLazySingleton<String>(() => ""); //gender
+  getIt.registerLazySingleton<int>(() => 0); //age
+
   // Services
+  
+  getIt.registerLazySingleton(() => FirebaseService.auth);
+  getIt.registerLazySingleton<AuthService>(() => AuthService(getIt()));
+
   getIt.registerLazySingleton<AudioService>(() => AudioService());
 
   // Data Sources
@@ -63,5 +76,5 @@ void configureDependencies() {
   getIt.registerFactory<AnimalBloc>(() => AnimalBloc(getIt()));
   getIt.registerFactory<ColorBloc>(() => ColorBloc(getIt()));
   getIt.registerFactory<StoryBloc>(() => StoryBloc(getIt()));
-  getIt.registerFactory<AuthBloc>(() => AuthBloc(getIt()));
+  getIt.registerFactory(() => AuthBloc(getIt()));
 }
