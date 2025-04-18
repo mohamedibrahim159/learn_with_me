@@ -12,7 +12,7 @@ This project is a Flutter application aimed at children's education. It leverage
 
 ## Project Description
 
-The **Learn With Me** app is designed to provide educational content for children in an engaging and interactive way. It focuses on teaching fundamental concepts like letters, numbers, animals, colors, and stories. The application is built with a user-friendly interface that caters to both learners and parents, offering content in both Arabic and English.
+The **Learn With Me** app is designed to provide educational content for children in an engaging and interactive way. It focuses on teaching fundamental concepts like letters, numbers, animals, and stories. The application is built with a user-friendly interface that caters to both learners and parents, offering content in both Arabic and English.
 
 ## Features
 
@@ -20,15 +20,12 @@ The **Learn With Me** app is designed to provide educational content for childre
     *   Letters
     *   Numbers
     *   Animals
-    *   Colors
     *   Stories
-*   **Multilingual Support:** UI available in both Arabic and English.
 *   **User Sections:** Distinct sections for "For Parents" and "For Learners".
 *   **Audio Content:** Ready for integration with external APIs for fetching audio content.
 *   **Responsive UI:** Designed to work on all screen sizes (phones, tablets).
 *   **Firebase Authentication:** Uses Firebase for anonymous guest login.
 *   **Mock Data:** Uses mock data until the real API is integrated.
-*   **Localization:** Implements localization for AR (Arabic) and EN (English).
 *   **State Management:** Employs BLoC/Cubit for state management.
 *   **Clean Architecture:** Adheres to Clean Architecture principles.
 
