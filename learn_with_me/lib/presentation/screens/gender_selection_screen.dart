@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../routes/app_routes.dart';
 
 class GenderSelectionScreen extends StatefulWidget {
   const GenderSelectionScreen({super.key});
@@ -49,14 +50,11 @@ class _GenderSelectionScreenState extends State<GenderSelectionScreen> {
             ElevatedButton(
               onPressed: selectedGender != null
                   ? () {
-                      Navigator.pushNamed(context, '/age');
-                      print('Selected gender: $selectedGender');
+                      Navigator.pushNamed(
+                          context, AppRoutes.childAge);
                     }
                   : null,
               child: const Text('Continue'),
-            ),
-              },
-              child: const Text('Girl'),
             ),
           ],
         ),
