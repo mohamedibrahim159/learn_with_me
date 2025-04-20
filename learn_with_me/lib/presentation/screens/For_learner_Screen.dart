@@ -1,20 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
-import 'package:learn_with_me/lib/core/constants/app_colors.dart';
-import 'package:learn_with_me/lib/presentation/routes/app_routes.dart';
-import 'package:learn_with_me/lib/core/constants/app_assets.dart';
-import 'package:learn_with_me/lib/presentation/widgets/responsive_widget.dart';
+import '../../core/constants/app_colors.dart';
+import '../routes/app_routes.dart';
+import '../../core/constants/app_assets.dart';
+import '../widgets/responsive_widget.dart';
 import 'dart:math' as math;
 
 
-class AgeSelectionScreen extends StatefulWidget {
-  const AgeSelectionScreen({super.key});
+class ForLearnersScreen extends StatefulWidget {
+  const ForLearnersScreen({super.key});
 
   @override
-  State<AgeSelectionScreen> createState() => _AgeSelectionScreenState();
+  State<ForLearnersScreen> createState() => _ForLearnersScreenState();
 }
 
-class _AgeSelectionScreenState extends State<AgeSelectionScreen> {  
+class _ForLearnersScreenState extends State<ForLearnersScreen> {
   String childName = "Learner 1";
   String? _selectedAge;
   final TextEditingController _nameController = TextEditingController();
@@ -26,7 +26,7 @@ class _AgeSelectionScreenState extends State<AgeSelectionScreen> {
   @override
   void initState() {
     super.initState();
-    _loadSavedData();
+    _loadSavedData(); 
   }
   void _loadSavedData() {
       final getIt = GetIt.instance;
@@ -36,7 +36,7 @@ class _AgeSelectionScreenState extends State<AgeSelectionScreen> {
     _selectedAge = getIt.get<String?>(instanceName: 'childAge') ?? "Age 4-5";
   }
 
-  
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -140,7 +140,7 @@ class _AgeSelectionScreenState extends State<AgeSelectionScreen> {
   void dispose() {
     _nameController.dispose();
     super.dispose();
-  }
+  } 
 
 
  Widget _buildAgeSelectionArea() {
