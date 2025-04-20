@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../../core/constants/app_colors.dart';
 import '../routes/app_routes.dart';
 import '../../core/constants/app_assets.dart';
 import '../widgets/responsive_widget.dart';
-import 'dart:math' as math;
 
 
 class ForLearnersScreen extends StatefulWidget {
@@ -26,12 +26,14 @@ class _ForLearnersScreenState extends State<ForLearnersScreen> {
   @override
   void initState() {
     super.initState();
-    _loadSavedData(); 
+    _loadSavedData();
   }
+
   void _loadSavedData() {
-      final getIt = GetIt.instance;
-      _savedData = getIt.get<Map<String, String>?>(instanceName: 'childData');
     final getIt = GetIt.instance;
+    _savedData = getIt.get<Map<String, String>?>(instanceName: 'childData');
+    final getIt = GetIt.instance;
+
     childName = getIt.get<String?>(instanceName: 'savedChildName') ?? "Learner 1";
     _selectedAge = getIt.get<String?>(instanceName: 'childAge') ?? "Age 4-5";
   }
@@ -39,7 +41,7 @@ class _ForLearnersScreenState extends State<ForLearnersScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return  Scaffold(
      body: Stack(
         children: [
           Positioned(
@@ -77,7 +79,6 @@ class _ForLearnersScreenState extends State<ForLearnersScreen> {
             builder: (context, width) {
               return Center(
                 child: Padding(
-                  padding: const EdgeInsets.all(16.0),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -101,10 +102,10 @@ class _ForLearnersScreenState extends State<ForLearnersScreen> {
                       if (_savedData != null) ...[
                         Text("Child's Name: ${_savedData!['name'] ?? ''}"),
                         Text("Selected Age: ${_savedData!['age'] ?? ''}"),
-                      ]
+                      ],
                      ],
                   ),
-                ),
+                )
               );
 
             },
@@ -116,21 +117,34 @@ class _ForLearnersScreenState extends State<ForLearnersScreen> {
     );
   }
 
-  void _saveData() {
+  void _saveData() async {
     final getIt = GetIt.instance;
-    if (_selectedAge != null) {
-      setState(() {
-        _isDataChanged = false;
-        _savedData = {
-          'name': childName,
-          'age': _selectedAge!,
-        };
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String savedName = getIt.get<String?>(instanceName: 'savedChildName') ?? "Learner 1";
+     String savedAge = getIt.get<String?>(instanceName: 'childAge') ?? "Age 4-5";
 
-        if(getIt.isRegistered<Map<String, String>>(instanceName: 'childData')){
-          getIt.unregister<Map<String, String>>(instanceName: 'childData');
-        }
-        getIt.registerSingleton<Map<String, String>>(_savedData!, instanceName: 'childData');
+    setState(() {
+      _isDataChanged = false;
+      _savedData = {
+        'name': childName,
+        'age': _selectedAge!,
+      };
 
+      if (getIt.isRegistered<Map<String, String>>(instanceName: 'childData')) {
+        getIt.unregister<Map<String, String>>(instanceName: 'childData');
+      }
+      getIt.registerSingleton<Map<String, String>>(_savedData!, instanceName: 'childData');
+
+      if (childName.isEmpty) {
+        childName = savedName;
+      }
+
+      if (_selectedAge == null) {
+        _selectedAge = savedAge;
+      }
+      prefs.setBool('isFirstTime', false);
+          getIt.registerSingleton<String>(childName,instanceName: 'savedChildName');
+        getIt.registerSingleton<String>(_selectedAge!,instanceName: 'childAge');
         _isDataChanged = false;
         Navigator.pushNamed(context, AppRoutes.home); // Close the dialog
       });
@@ -142,18 +156,18 @@ class _ForLearnersScreenState extends State<ForLearnersScreen> {
     super.dispose();
   } 
 
-
  Widget _buildAgeSelectionArea() {
-    final List<String> ageRanges = ["Age 4-5", "Age 6-7", "Age 7-8"];
-
-
-    return Wrap(
+    final List<String> ageRanges = ["Age 4-5", "Age 6-7", "Age 7-8"]; 
+     return  Wrap(
       spacing: 10,
       children: ageRanges.map((ageRange) {
         bool isSelected = _selectedAge == ageRange;
         return GestureDetector(
           onTap: () {
            setState(() {
+           
+               
+                
               if(_selectedAge != ageRange){
                  _isDataChanged = true;
               }
@@ -192,7 +206,7 @@ class _ForLearnersScreenState extends State<ForLearnersScreen> {
     );
   }
 
-   
+
    void _showEditNameDialog() {
     showDialog(
       context: context,
@@ -217,6 +231,7 @@ class _ForLearnersScreenState extends State<ForLearnersScreen> {
               onPressed: () {
                 setState(() {
                   if (_nameController.text.isNotEmpty) {
+                   
                     setState(() {
                         _isDataChanged = true;
                       });
@@ -232,8 +247,7 @@ class _ForLearnersScreenState extends State<ForLearnersScreen> {
     );
   }
 
- Widget _buildChildNameArea() {
-  }
+ 
  Widget _buildChildImage() {
     return const CircleAvatar(
       radius: 60,
@@ -241,7 +255,7 @@ class _ForLearnersScreenState extends State<ForLearnersScreen> {
     );
   }
 
-  Widget _buildLearnerTrackActiveNow() {
+   Widget _buildLearnerTrackActiveNow() {
     return const Text(
       "Learner track active now",
       style: TextStyle(fontSize: 12, color: Colors.grey),

@@ -4,6 +4,7 @@ import 'package:get_it/get_it.dart';
 import 'package:learn_with_me/presentation/blocs/auth_bloc.dart';
 import 'package:learn_with_me/presentation/routes/app_routes.dart';
 import 'package:learn_with_me/core/constants/app_constants.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -40,8 +41,10 @@ class _LoginScreenState extends State<LoginScreen> {
           child: BlocConsumer<AuthBloc, AuthState>(
             listener: (context, state) {
               if (state is AuthAuthenticated) {
+                _saveLoginStatus();
                 Navigator.pushReplacementNamed(
                     context, AppRoutes.genderSelection);
+                
               }
               if (state is AuthFailure) {
                 ScaffoldMessenger.of(context).showSnackBar(
@@ -133,7 +136,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     ElevatedButton(
                       onPressed: isloading
                           ? null
-                          : () {
+                          :() {
                               Navigator.pushReplacementNamed(
                                   context, AppRoutes.home);
                             },
@@ -161,43 +164,9 @@ class _LoginScreenState extends State<LoginScreen> {
       ),
     );
   }
+  Future<void> _saveLoginStatus() async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  await prefs.setBool('isLoggedIn', true);
 }
-                          }
-                        authBloc.add(AuthSignInWithEmailAndPasswordRequested(email: email, password: password));
-                      },
-                      child: const Text('Sign in'),
-                    ),
-                    const SizedBox(height: 20),
-                    ElevatedButton(
-                      onPressed: () {
-                        authBloc.add(AuthSignInWithGoogleRequested());
-                      },
-                      child: const Text('Sign in with Google'),
-                    ),
-                    const SizedBox(height: 20),
-                    ElevatedButton(
-                      onPressed: () {
-                         authBloc.add(const AuthCheckRequested());
-                      },
-                      child: const Text('Skip'),
-                    ),
-                    const SizedBox(height: 20),
-                    ElevatedButton(
-                      onPressed: () {
-                        authBloc.add(AuthSignInWithFacebookRequested());
-                      },
-                      child: const Text('Sign in with Facebook'),
-                    ),
-                    if (state is AuthLoading)
-                      const Center(
-                        child: CircularProgressIndicator(),
-                      )
-                  ],
-                ),
-              );
-            },
-          ),
-      ),
-    );
-  }
 }
+

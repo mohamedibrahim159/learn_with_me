@@ -1,12 +1,40 @@
 import 'package:flutter/material.dart';
 import '../routes/app_routes.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-class WelcomeScreen extends StatelessWidget {
+class WelcomeScreen extends StatefulWidget {
   const WelcomeScreen({Key? key}) : super(key: key);
 
   @override
+  State<WelcomeScreen> createState() => _WelcomeScreenState();
+}
+
+class _WelcomeScreenState extends State<WelcomeScreen> {
+  @override
+  void initState() {
+    super.initState();
+    _checkFirstTimeAndLogin();
+  }
+
+  void _checkFirstTimeAndLogin() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    bool isFirstTime = prefs.getBool('isFirstTime') ?? true;
+    bool isLoggedIn = prefs.getBool('isLoggedIn') ?? false;
+
+    if (isFirstTime) {
+      Navigator.pushReplacementNamed(context, AppRoutes.login);
+    } else {
+      if (isLoggedIn) {
+        Navigator.pushReplacementNamed(context, AppRoutes.home);
+      } else {
+        Navigator.pushReplacementNamed(context, AppRoutes.login);
+      }
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return const Scaffold(
       body: Container(
         decoration: const BoxDecoration(
           gradient: LinearGradient(
@@ -18,43 +46,9 @@ class WelcomeScreen extends StatelessWidget {
               Color(0xFF55A8F4),
             ],
           ),
-        ),
-        child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Image.asset('assets/images/welcome.png'),
-              const SizedBox(height: 20),
-              const Text(
-                'fun adventure to learn letters',
-                style: TextStyle(fontSize: 20, color: Colors.white),
-              ),
-              const SizedBox(height: 50),
-              ElevatedButton(
-                onPressed: () {
-                  Navigator.pushNamed(context, AppRoutes.login);
-                },
-                style: ElevatedButton.styleFrom(
-                  padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 15),
-                  backgroundColor: Colors.white,
-                  foregroundColor: Colors.blue,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(30),
-                  ),
-                ),
-                child: const Text('GET START'),
-              ),
-              const SizedBox(height: 20),
-              TextButton(
-                onPressed: () {
-                  Navigator.pushNamed(context, AppRoutes.login);
-                },
-                child: const Text(
-                  'I ALREADY HAVE AN ACCOUNT',
-                  style: TextStyle(color: Colors.white, fontSize: 16),
-                ),
-              ),
-            ],
+        ), 
+        child: Center(child: CircularProgressIndicator(color: Colors.white,)
+        
           ),
         ),
       ),
