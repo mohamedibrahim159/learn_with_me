@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:learn_with_me/config/dependencies.dart';
-import 'package:learn_with_me/core/services/auth_service.dart';
 import 'package:learn_with_me/presentation/routes/app_routes.dart';
+import 'package:learn_with_me/domain/usecases/authenticate_user.dart';
 
-class ForgotPasswordScreen extends StatelessWidget {
+class ForgotPasswordScreen extends StatefulWidget {
   const ForgotPasswordScreen({super.key});
 
+  @override
+  State<ForgotPasswordScreen> createState() => _ForgotPasswordScreenState();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -22,24 +24,17 @@ class ForgotPasswordScreen extends StatelessWidget {
               style: TextStyle(fontSize: 18),
             ),
             const SizedBox(height: 16),
-             TextField(
-                controller: TextEditingController(),
-                decoration: const InputDecoration(
-                  labelText: 'Email',
-                  border: OutlineInputBorder(),
-                ),
+            TextField(
+              controller: _emailController,
+              decoration: const InputDecoration(
+                labelText: 'Email',
+                border: OutlineInputBorder(),
               ),
+            ),
             const SizedBox(height: 24),
             ElevatedButton(
               onPressed: () {
-                  final authService = getIt<AuthService>();
-                   authService.sendPasswordResetEmail("test@test.com").then((value) => {
-                      Navigator.pushReplacementNamed(
-                        context,
-                        AppRoutes.verifyEmail,
-                      ),
-                    });
-                // TODO: Implement forgot password logic
+                _sendResetLink(_emailController.text, context);
               },
               child: const Text('Send Reset Link'),
             ),
@@ -47,5 +42,19 @@ class ForgotPasswordScreen extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  final TextEditingController _emailController = TextEditingController();
+
+  void _sendResetLink(String email, BuildContext context) async {
+    final authenticateUserUseCase = getIt<AuthenticateUser>();
+
+    // TODO: Implement forgot password logic
+    // await authenticateUserUseCase.sendPasswordResetEmail(email).then((value) => {
+    //       Navigator.pushReplacementNamed(
+    //         context,
+    //         AppRoutes.verifyEmail,
+    //       ),
+    //     });
   }
 }

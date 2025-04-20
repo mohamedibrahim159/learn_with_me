@@ -3,26 +3,32 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:learn_with_me/app/l10n/app_localizations.dart';
 import 'package:learn_with_me/domain/entities/letter.dart';
 import 'package:learn_with_me/presentation/blocs/letter_bloc.dart';
-import 'package:learn_with_me/core/services/audio_service.dart';
 import 'package:learn_with_me/presentation/widgets/responsive_widget.dart';
-import 'package:get_it/get_it.dart';
+import '../../../core/services/audio_service.dart';
 
 class LettersScreen extends StatefulWidget {
-  final AudioService audioService; final LetterBloc letterBloc;
-  const LettersScreen({super.key, required this.audioService, required this.letterBloc});
+  const LettersScreen({
+    Key? key,
+    required this.audioService,
+    required this.letterBloc,
+  }) : super(key: key);
+
+  final AudioService audioService;
+  final LetterBloc letterBloc;
 
   @override
   State<LettersScreen> createState() => _LettersScreenState();
 }
 
 class _LettersScreenState extends State<LettersScreen> {
-  @override
+   @override
   void initState() {
-    widget.letterBloc.add(const GetLettersEvent());
     super.initState();
+    widget.letterBloc.add(const GetLettersEvent());
   }
 
   @override
+ 
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -35,10 +41,13 @@ class _LettersScreenState extends State<LettersScreen> {
             return const Center(
               child: CircularProgressIndicator(),
             );
-          } else if (state.errorMessage != null) {
+          } else if (state.errorMessage.isNotEmpty) { 
             return Center(
-              child: Text(state.errorMessage!),
+              child: Text(state.errorMessage),
             );
+          } else if (state.letters.isEmpty) {
+          
+              return const Center(child: Text("No Data"),);
           } else if (state.letters != null) {
             return ResponsiveWidget(
               mobileWidget: Padding(
@@ -63,12 +72,13 @@ class _LettersScreenState extends State<LettersScreen> {
     return ListView.builder(
         itemCount: letters.length,
         itemBuilder: (context, index) {
-          final letter = letters[index];
+         final Letter letter = letters[index];
+
           return ListTile(
-            title: Text(letter.letter),
+            title: Text(letter.name),
             trailing: IconButton(
               icon: const Icon(Icons.volume_up),
-              onPressed: () {
+                onPressed: () {
                 widget.audioService.playAudio(letter.audioPath);
               },
             ),
@@ -82,14 +92,15 @@ class _LettersScreenState extends State<LettersScreen> {
             crossAxisCount: crossAxisCount),
         itemCount: letters.length,
         itemBuilder: (context, index) {
-          final letter = letters[index];
+          final Letter letter = letters[index];
           return Center(
+
               child: IconButton(
                   icon: const Icon(Icons.volume_up),
                   onPressed: () {
                     widget.audioService.playAudio(letter.audioPath);
                   },
-                  label: Text(letter.letter)));
+                  label: Text(letter.name)));
         });
   }
 }

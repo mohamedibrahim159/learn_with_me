@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:learn_with_me/config/dependencies.dart';
+import 'package:learn_with_me/presentation/blocs/letter_bloc.dart';
+import '../../core/services/audio_service.dart';
+
 import '../screens/age_selection_screen.dart';
 import '../screens/create_new_password_screen.dart';
 import '../screens/welcome_screen.dart';
@@ -15,8 +19,12 @@ import '../screens/login_screen.dart';
 import '../screens/verify_email_screen.dart';
 
 class AppRoutes {
-  static const String initialRoute = '/welcome';
-    static const String welcome = '/welcome';
+    static const String initialRoute = '/login';
+
+  static const String letters = '/letters';
+  static const String numbers = '/numbers';
+  static const String animals = '/animals';
+  static const String stories = '/stories';
   static const String home = '/home';
   static const String login = '/login';
   static const String genderSelection = '/gender_selection';
@@ -27,13 +35,13 @@ class AppRoutes {
   static const String profile = '/profile';
   static const String parents = '/parents';
   static Map<String, WidgetBuilder> routes = {
-    welcome: (context) => const WelcomeScreen(),
-    login: (context) => const LoginScreen(),
-    home: (context) => const HomeScreen(),
-    '/letters': (context) => const LettersScreen(),
-    '/numbers': (context) => const NumbersScreen(),
-    '/animals': (context) => const AnimalsScreen(),
-    '/stories': (context) => const StoriesScreen(),
+    '/welcome': (context) => const WelcomeScreen(),
+    login: (context) =>  const LoginScreen(),
+    home: (context) =>  const HomeScreen(),
+    letters: (context) =>  LettersScreen(audioService: getIt<AudioService>(), letterBloc: getIt<LetterBloc>()),
+    numbers: (context) => const NumbersScreen(),
+    animals: (context) => const AnimalsScreen(),
+    stories: (context) => const StoriesScreen(),
     genderSelection: (context) => const GenderSelectionScreen(),
     ageSelection: (context) => const AgeSelectionScreen(),
     forgotPassword: (context) => const ForgotPasswordScreen(),

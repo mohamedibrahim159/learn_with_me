@@ -4,6 +4,8 @@ import 'package:learn_with_me/data/datasources/content_local_datasource.dart';
 import 'package:learn_with_me/data/models/animal_model.dart';
 import 'package:learn_with_me/data/models/story_model.dart';
 import 'package:learn_with_me/domain/entities/animal.dart';
+import 'package:learn_with_me/domain/entities/color.dart';
+import 'package:learn_with_me/domain/repositories/content_repository.dart';
 import 'package:learn_with_me/domain/entities/story.dart';
 
 class ContentRepositoryImpl implements ContentRepository {
@@ -30,6 +32,15 @@ class ContentRepositoryImpl implements ContentRepository {
       return Right(stories);
     } on Exception catch (e) {
       return Left(ServerFailure(message: e.toString()));
+    }
+  }
+  
+  @override
+  Future<Either<Failure, List<Color>>> getColors() async {
+    try{
+      return const Right([]);
+    } catch (e){
+            return Left(ServerFailure(message: e.toString()));
     }
   }
 }

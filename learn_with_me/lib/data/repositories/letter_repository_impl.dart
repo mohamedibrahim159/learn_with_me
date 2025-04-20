@@ -1,3 +1,4 @@
+import 'package:learn_with_me/data/datasources/letter_local_datasource.dart';
 import 'package:dartz/dartz.dart';
 import 'package:learn_with_me/core/errors/failures.dart';
 import 'package:learn_with_me/core/usecases/usecase.dart';
@@ -11,7 +12,7 @@ class LetterRepositoryImpl implements LetterRepository {
   LetterRepositoryImpl({required this.letterLocalDataSource});
 
   @override
-  Either<Failure, List<Letter>> getLetters(NoParams params) async {
+  Future<Either<Failure, List<Letter>>> getLetters(NoParams params) async {
     try {
       final result = await letterLocalDataSource.getLetters();    
       final letters = result.map((letterModel) => letterModel.toEntity()).toList();

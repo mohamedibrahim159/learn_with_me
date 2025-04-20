@@ -1,3 +1,5 @@
+import 'package:equatable/equatable.dart';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../core/errors/failures.dart';
 import '../../../domain/entities/letter.dart';

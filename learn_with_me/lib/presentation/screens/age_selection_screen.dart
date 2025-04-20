@@ -15,15 +15,22 @@ class AgeSelectionScreen extends StatefulWidget {
 }
 
 class _AgeSelectionScreenState extends State<AgeSelectionScreen> {  
-  String childName = "Learner 1"; 
+  String childName = "Learner 1";
   String? _selectedAge;
   final TextEditingController _nameController = TextEditingController();
-  String? savedChildName, savedAge;
+
+  Map<String, String>? _savedData;
+
   bool _isDataChanged = false;
 
   @override
   void initState() {
     super.initState();
+    _loadSavedData();
+  }
+  void _loadSavedData() {
+      final getIt = GetIt.instance;
+      _savedData = getIt.get<Map<String, String>?>(instanceName: 'childData');
     final getIt = GetIt.instance;
     childName = getIt.get<String?>(instanceName: 'savedChildName') ?? "Learner 1";
     _selectedAge = getIt.get<String?>(instanceName: 'childAge') ?? "Age 4-5";
@@ -52,9 +59,11 @@ class _AgeSelectionScreenState extends State<AgeSelectionScreen> {
               },
               style: ElevatedButton.styleFrom(
                 backgroundColor: AppColors.primaryColor,
+
                 foregroundColor: Colors.white,
                 padding:
                     const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(20),
                 ),
@@ -83,14 +92,23 @@ class _AgeSelectionScreenState extends State<AgeSelectionScreen> {
                       ElevatedButton(
                         onPressed: _isDataChanged ? _saveData : null,
                         child: const Text("Save"),
-                         ),
-                    
-                      
+                      ),
+                      if (_savedData == null)
+                        const Text(
+                          "No data saved",
+                          style: TextStyle(fontSize: 16),
+                        ),
+                      if (_savedData != null) ...[
+                        Text("Child's Name: ${_savedData!['name'] ?? ''}"),
+                        Text("Selected Age: ${_savedData!['age'] ?? ''}"),
+                      ]
                      ],
                   ),
                 ),
               );
+
             },
+
           )
         ],
       ),
@@ -99,27 +117,30 @@ class _AgeSelectionScreenState extends State<AgeSelectionScreen> {
   }
 
   void _saveData() {
-     final getIt = GetIt.instance;
+    final getIt = GetIt.instance;
     if (_selectedAge != null) {
       setState(() {
         _isDataChanged = false;
-          savedChildName = childName;
-          savedAge = _selectedAge;
+        _savedData = {
+          'name': childName,
+          'age': _selectedAge!,
+        };
 
-        if(getIt.isRegistered<String>(instanceName: 'savedChildName')){
-          getIt.unregister<String>(instanceName: 'savedChildName');
+        if(getIt.isRegistered<Map<String, String>>(instanceName: 'childData')){
+          getIt.unregister<Map<String, String>>(instanceName: 'childData');
         }
-          getIt.registerSingleton<String>(savedChildName!, instanceName: 'savedChildName');
-        if(getIt.isRegistered<String>(instanceName: 'savedAge')){
-          getIt.unregister<String>(instanceName: 'savedAge');
-        }
-          getIt.registerSingleton<String>(savedAge!, instanceName: 'savedAge');
-           _isDataChanged=false;
-          Navigator.pushNamed(context, AppRoutes.home);// Close the dialog
-        });
-       
+        getIt.registerSingleton<Map<String, String>>(_savedData!, instanceName: 'childData');
+
+        _isDataChanged = false;
+        Navigator.pushNamed(context, AppRoutes.home); // Close the dialog
+      });
     }
-      }
+  }
+  @override
+  void dispose() {
+    _nameController.dispose();
+    super.dispose();
+  }
 
 
  Widget _buildAgeSelectionArea() {

@@ -11,12 +11,12 @@ class UserRepositoryImpl implements UserRepository {
   UserRepositoryImpl({required this.localDataSource});
 
   @override
-  Future<Either<Failure, User>> authenticateUser() async {
+   Future<Either<Failure, User>> authenticateUser() async {
     try {
-      final result = await localDataSource.authenticateUser();
-      return Right(UserModel.fromJson(result));
-    } on Exception {
-        return const Left(ServerFailure(message: ''));
+      final userModel = await localDataSource.authenticateUser();
+      return Right(userModel.toEntity());
+    } catch (e) {
+      return Left(ServerFailure(message: e.toString()));
     }
   }
 }

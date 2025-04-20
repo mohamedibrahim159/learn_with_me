@@ -51,7 +51,7 @@ class _GenderSelectionScreenState extends State<GenderSelectionScreen> {
               onPressed: selectedGender != null
                   ? () {
                       Navigator.pushNamed(
-                          context, AppRoutes.childAge);
+                          context, AppRoutes.ageSelection);
                     }
                   : null,
               child: const Text('Continue'),

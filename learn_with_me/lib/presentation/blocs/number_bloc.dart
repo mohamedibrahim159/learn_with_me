@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:learn_with_me/core/errors/failures.dart';
@@ -16,16 +18,29 @@ class NumberBloc extends Bloc<NumberEvent, NumberState> {
 
       final failureOrNumbers = await getNumbersUseCase(NoParams());
 
-      failureOrNumbers.fold(
-        (failure) => emit(state.copyWith(
+      failureOrNumbers.fold((failure) {
+        emit(state.copyWith(
           isLoading: false,
-          errorMessage: failure.message,
-        )),
-        (numbers) => emit(state.copyWith(
+          errorMessage: _mapFailureToMessage(failure),
+        ));
+      }, (numbers) {
+        emit(state.copyWith(
           isLoading: false,
+          errorMessage: '',
           numbers: numbers,
-        )),
-      );
+        ));
+      });
     });
+  }
+
+   String _mapFailureToMessage(Failure failure) {
+    switch (failure.runtimeType) {
+      case ServerFailure:
+        return 'Server Failure';
+      case CacheFailure:
+        return 'Cache Failure';
+      default:
+        return 'Unexpected Error';
+    }
   }
 }

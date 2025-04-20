@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:dartz/dartz.dart';
 import 'package:learn_with_me/core/errors/failures.dart';
 import 'package:learn_with_me/core/usecases/usecase.dart';
@@ -15,9 +16,12 @@ class NumberRepositoryImpl implements NumberRepository {
   Either<Failure, List<Number>> getNumbers(NoParams params) async {
     try {
       final numbers = await numberLocalDataSource.getNumbers();
-      return Right(numbers);
+        final numberModels = numbers
+        .map((json) => NumberModel.fromJson(json))
+        .toList();
+      return Right(numberModels);
     } catch (e) {
-      return Left(ServerFailure(message: e.toString()));
+          return Left(ServerFailure(message: e.toString()));
     }
   }
 }
