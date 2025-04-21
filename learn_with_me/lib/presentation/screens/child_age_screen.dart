@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:learn_with_me/core/constants/app_assets.dart';
+import 'package:learn_with_me/core/constants/app_colors.dart';
+import 'package:learn_with_me/core/utils/extensions/size_extention.dart';
+import 'package:learn_with_me/presentation/widgets/responsive_widget.dart';
 import 'package:get_it/get_it.dart';
 import '../routes/app_routes.dart';
 
@@ -13,58 +17,152 @@ class _ChildAgeScreenState extends State<ChildAgeScreen> {
   String _selectedAge = '';
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            const SizedBox(height: 100),
-            const Text(
-              'What age is your child ?',
-              style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
-            ),
-            const SizedBox(height: 50),
-            ElevatedButton(
-              onPressed: () {
-                _selectedAge = '4 - 5 years';
-                GetIt.I.registerSingleton<String>(_selectedAge,instanceName: 'childAge');
-                Navigator.pushNamed(context, AppRoutes.introduction);
-              },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: const Color(0xff48a8a6),
-                minimumSize: const Size(320, 50),
-                padding: const EdgeInsets.all(5),
-              ),
-              child: const Text(
-                '4 - 5 years',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 20,
-                ),
+    return ResponsiveWidget(builder: (BuildContext context, size) {
+      return Scaffold(
+        extendBodyBehindAppBar: true,
+        body: Container(
+            decoration: const BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage(AppAssets.childAgeBackgroundImage),
+                fit: BoxFit.cover,
               ),
             ),
-            const SizedBox(height: 10),
-            ElevatedButton(
-              onPressed: () {
-                _selectedAge = '6 - 7 years';
-                GetIt.I.registerSingleton<String>(_selectedAge,instanceName: 'childAge');
-                Navigator.pushNamed(context, AppRoutes.introduction);
-              },
-              child: const Text('6 - 7 years'),
-            ),
-            const SizedBox(height: 10),
-            ElevatedButton(
-              onPressed: () {
-                _selectedAge = '7 - 8 years';
-                GetIt.I.registerSingleton<String>(_selectedAge,instanceName: 'childAge');
-                Navigator.pushNamed(context, AppRoutes.introduction);
-              },
-              child: const Text('7 - 8 years'),
-            ),
-          ],
-        ),
+            child: Padding(
+              padding: EdgeInsets.only(
+                  left: size.width * 0.05, right: size.width * 0.05),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Padding(
+                    padding: EdgeInsets.only(top: size.height * 0.05),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.white,
+                              fixedSize:
+                                  Size(size.width * 0.2, size.height * 0.05),
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(20))),
+                          onPressed: () {
+                            Navigator.pushNamed(
+                                context, AppRoutes.introduction);
+                          },
+                          child: const Text(
+                            'Skip',
+                            style: TextStyle(
+                                color: Colors.black, fontFamily: 'Viga'),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(top: size.height * 0.35),
+                    child: Text(
+                      "What age is your child ?",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        color: AppColors.orange,
+                        fontSize: size.width * 0.07,
+                        fontFamily: "Viga",
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(top: size.height * 0.05),
+                    child: Column(
+                      children: [
+                         Padding(
+                          padding: EdgeInsets.only(bottom: size.height * 0.02),
+                          child: ElevatedButton(
+                              onPressed: () => _goToIntroductionScreen("4-5"),
+                              style: ageButtonStyle(size),
+                              child: const Text("4 - 5 years",
+                                  style: TextStyle(
+                                      color: Colors.black,
+                                      fontFamily: "Viga"))),
+                        ),
+                        Padding(
+                          padding: EdgeInsets.only(bottom: size.height * 0.02),
+                          child: ElevatedButton(
+                              onPressed: () => _goToIntroductionScreen("6-7"),
+                              style: ageButtonStyle(size),
+                              child: const Text("6 - 7 years",
+                                  style: TextStyle(
+                                      color: Colors.black,
+                                      fontFamily: "Viga"))),
+                        ),
+                         Padding(
+                          padding: EdgeInsets.only(bottom: size.height * 0.02),
+                          child: ElevatedButton(
+                              onPressed: () => _goToIntroductionScreen("7-8"),
+                              style: ageButtonStyle(size),
+                              child: const Text("7 - 8 years",
+                                  style: TextStyle(
+                                      color: Colors.black,
+                                      fontFamily: "Viga"))),
+                        ),
+                      ],
+                    ),
+                  )
+                ],
+              ),
+            )),
+      );
+    });
+  }
+
+  ButtonStyle ageButtonStyle(size) {
+    return ElevatedButton.styleFrom(
+      fixedSize: Size(size.width, size.height * 0.07),
+      backgroundColor: Colors.white,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(25),
       ),
     );
   }
+  void _goToIntroductionScreen(String age) {
+    GetIt.I.registerSingleton<String>(
+      age,
+      instanceName: 'childAge',
+    );
+    Navigator.pushNamed(context, AppRoutes.introduction);
+  }
+}
+
+                      return Padding(
+                        padding: EdgeInsets.only(bottom: size.height * 0.02),
+                        child: ElevatedButton(
+                          onPressed: () {
+                            setState(() {
+                              _selectedAge = age.toString();
+                            });
+                            GetIt.I.registerSingleton<String>(
+                                _selectedAge,
+                                instanceName: 'childAge');
+                            Navigator.pushNamed(
+                                context, AppRoutes.introduction);
+                          },
+                          style: ElevatedButton.styleFrom(
+                            fixedSize: Size(size.width, size.height * 0.07),
+                            backgroundColor: Colors.white,
+                          ),
+                          child: Text(
+                            age.toString(),
+                            style: TextStyle(
+                                color: Colors.black, fontFamily: "Viga"),
+                          ),
+                        ),
+                      );
+                    }),
+                  ),
+                )
+              ],
+            ),
+          )),
+        ),
+    );
+      });}
 }

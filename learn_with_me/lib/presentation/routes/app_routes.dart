@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:learn_with_me/config/dependencies.dart';
 import 'package:learn_with_me/presentation/blocs/letter_bloc.dart';
+import 'package:learn_with_me/presentation/screens/introduction_screen.dart';
 import '../../core/services/audio_service.dart';
 
 import '../screens/create_new_account_screen.dart';
@@ -35,6 +36,7 @@ class AppRoutes {
   static const String createNewPassword = '/create_new_password';
   static const String profile = '/profile';
   static const String parents = '/parents';
+  static const String introduction = '/introduction';
   static const String createNewAccount = '/create_new_account';
   static Map<String, WidgetBuilder> routes = {
     '/welcome': (context) => const WelcomeScreen(),
@@ -52,5 +54,6 @@ class AppRoutes {
     profile: (context) => const ProfileScreen(),
         parents: (context) => const ParentsScreen(),
             createNewAccount: (context) => const CreateNewAccountScreen(),
+            introduction: (context) => const IntroductionScreen(),
   };
 }
