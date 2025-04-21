@@ -3,6 +3,7 @@ import 'package:learn_with_me/config/dependencies.dart';
 import 'package:learn_with_me/presentation/blocs/letter_bloc.dart';
 import '../../core/services/audio_service.dart';
 
+import '../screens/create_new_account_screen.dart';
 import '../screens/age_selection_screen.dart';
 import '../screens/create_new_password_screen.dart';
 import '../screens/welcome_screen.dart';
@@ -19,7 +20,7 @@ import '../screens/login_screen.dart';
 import '../screens/verify_email_screen.dart';
 
 class AppRoutes {
-    static const String initialRoute = '/login';
+    static const String initialRoute = '/gender_selection';
 
   static const String letters = '/letters';
   static const String numbers = '/numbers';
@@ -34,6 +35,7 @@ class AppRoutes {
   static const String createNewPassword = '/create_new_password';
   static const String profile = '/profile';
   static const String parents = '/parents';
+  static const String createNewAccount = '/create_new_account';
   static Map<String, WidgetBuilder> routes = {
     '/welcome': (context) => const WelcomeScreen(),
     login: (context) =>  const LoginScreen(),
@@ -49,5 +51,6 @@ class AppRoutes {
     createNewPassword: (context) => const CreateNewPasswordScreen(),
     profile: (context) => const ProfileScreen(),
         parents: (context) => const ParentsScreen(),
+            createNewAccount: (context) => const CreateNewAccountScreen(),
   };
 }

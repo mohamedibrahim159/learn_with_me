@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:learn_with_me/presentation/blocs/auth_bloc.dart';
 
+import '../routes/app_routes.dart';
 class CreateNewPasswordScreen extends StatefulWidget {
   const CreateNewPasswordScreen({super.key});
 
@@ -12,6 +15,8 @@ class _CreateNewPasswordScreenState extends State<CreateNewPasswordScreen> {
   final TextEditingController _confirmPasswordController = TextEditingController();
 
   bool _arePasswordsEqual() {
+    
+    
     return _passwordController.text == _confirmPasswordController.text;
   }
 

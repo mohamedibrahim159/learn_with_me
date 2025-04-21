@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:learn_with_me/core/errors/failures.dart';
 import 'package:learn_with_me/core/services/auth_service.dart';
@@ -34,13 +35,21 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
     on<AuthSignInWithEmailAndPasswordRequested>((event, emit) async {
       try {
-        emit(const AuthLoading());
-        await _authService.signInWithEmailAndPassword( 
-            email: event.email, password: event.password);
-        emit(const AuthAuthenticated());
-      }  catch (failure) {
-        emit(AuthFailure(failure: failure));
-      } 
+          emit(const AuthLoading());
+          final user = await _authService.signInWithEmailAndPassword(
+              email: event.email, password: event.password);
+              if (user != null) {
+              // Authentication successful
+              // Save user data if needed
+                  emit(const AuthAuthenticated());
+              } else {
+                  emit(const AuthUnauthenticated());
+              }
+           
+          } on FirebaseAuthException catch (e) {
+              emit(AuthFailure(failure: e.code));
+          }
+      
       
        }
     });
@@ -50,6 +59,48 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         emit(const AuthLoading());
         await _authService.signInWithGoogle();
         emit(const AuthAuthenticated());
+      } catch (failure) {
+        emit(AuthFailure(failure: failure));
+      }
+        
+       }
+    });
+    on<AuthCreateNewAccountRequested>((event, emit) async {
+      try {
+        emit(const AuthLoading());
+        final user = await _authService.createUserWithEmailAndPassword(
+            email: event.email, password: event.password);
+            if (user != null) {
+               emit(const AuthAuthenticated());
+              // Account creation successful, navigate to verify email screen
+              
+            } else {
+                emit(const AuthUnauthenticated());
+              // Account creation failed, display error message
+            }
+      } on FirebaseAuthException catch (e) {
+        emit(AuthFailure(failure: e.code));
+      }
+        
+       }
+    });
+    on<AuthForgotPasswordRequested>((event, emit) async {
+      try {
+        emit(const AuthLoading());
+         await _authService.sendPasswordResetEmail(email: event.email);
+        emit(const AuthUnauthenticated());
+      } catch (failure) {
+        emit(AuthFailure(failure: failure));
+      }
+        
+       }
+    });
+    on<AuthVerifyEmailRequested>((event, emit) async {
+      try {
+        emit(const AuthLoading());
+        await _authService.sendEmailVerification();
+        emit(const AuthUnauthenticated());
+        
       } catch (failure) {
         emit(AuthFailure(failure: failure));
       } 
@@ -100,6 +151,21 @@ class AuthSignInWithEmailAndPasswordRequested extends AuthEvent {
   final String password;
   const AuthSignInWithEmailAndPasswordRequested(
       {required this.email, required this.password});
+}
+
+class AuthCreateNewAccountRequested extends AuthEvent {
+  final String email;
+  final String password;
+  const AuthCreateNewAccountRequested(
+      {required this.email, required this.password});
+}
+class AuthForgotPasswordRequested extends AuthEvent {
+  final String email;
+  const AuthForgotPasswordRequested(
+      {required this.email});
+}
+class AuthVerifyEmailRequested extends AuthEvent {
+  const AuthVerifyEmailRequested();
 }
 
 class AuthSignInWithGoogleRequested extends AuthEvent {
