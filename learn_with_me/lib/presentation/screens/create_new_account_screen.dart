@@ -25,7 +25,7 @@ class _CreateNewAccountScreenState extends State<CreateNewAccountScreen> {
       return BlocListener<AuthBloc, AuthState>(
         listener: (context, state) {
           if (state is AuthAuthenticated) {
-             Navigator.pushReplacementNamed(context, AppRoutes.verifyEmail);
+            Navigator.pushReplacementNamed(context, AppRoutes.verifyEmail);
           }
           if (state is AuthFailure) {
             ScaffoldMessenger.of(context).showSnackBar(
@@ -47,9 +47,13 @@ class _CreateNewAccountScreenState extends State<CreateNewAccountScreen> {
                   decoration: InputDecoration(
                     filled: true,
                     fillColor: Colors.white,
-                    prefixIcon: const Icon(Icons.email,color: AppColors.primaryColor,),                      hintText: 'Email',
-                     border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10.0),
+                    prefixIcon: const Icon(
+                      Icons.email,
+                      color: AppColors.primaryColor,
+                    ),
+                    hintText: 'Email',
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10.0),
                           ),
                   ),
                 ),
@@ -58,15 +62,19 @@ class _CreateNewAccountScreenState extends State<CreateNewAccountScreen> {
                   controller: _passwordController,
                   obscureText: !_passwordVisible,
                   decoration: InputDecoration(
-                    filled: true,
-                    fillColor: Colors.white,
-                    prefixIcon: const Icon(Icons.lock,color: AppColors.primaryColor,),
-                    suffixIcon: IconButton(
-                        icon: Icon(_passwordVisible
-                            ? Icons.visibility_off
-                            : Icons.visibility),
-                        onPressed: () {
-                          setState(() {
+                      filled: true,
+                      fillColor: Colors.white,
+                      prefixIcon: const Icon(
+                        Icons.lock,
+                        color: AppColors.primaryColor,
+                      ),
+                      suffixIcon: IconButton(
+                          icon: Icon(_passwordVisible
+                              ? Icons.visibility_off
+                              : Icons.visibility),
+                          onPressed: () {
+                            setState(() {
+
                             _passwordVisible = !_passwordVisible;
                           });
                         }),
@@ -81,13 +89,16 @@ class _CreateNewAccountScreenState extends State<CreateNewAccountScreen> {
                   controller: _confirmPasswordController,
                   obscureText: !_passwordVisible,
                   decoration: InputDecoration(
-                      filled: true,
-                      fillColor: Colors.white,
-                      prefixIcon: const Icon(Icons.lock,color: AppColors.primaryColor,),
-                      hintText: 'Confirm Password',
-                       border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10.0),
-                          ),
+                    filled: true,
+                    fillColor: Colors.white,
+                    prefixIcon: const Icon(
+                      Icons.lock,
+                      color: AppColors.primaryColor,
+                    ),
+                    hintText: 'Confirm Password',
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10.0),
+                    ),
                       ),
                 ),
                 const SizedBox(height: 32),

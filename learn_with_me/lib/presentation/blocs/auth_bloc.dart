@@ -35,13 +35,12 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
     on<AuthSignInWithEmailAndPasswordRequested>((event, emit) async {
       try {
-          emit(const AuthLoading());
-          final user = await _authService.signInWithEmailAndPassword(
-              email: event.email, password: event.password);
-              if (user != null) {
-              // Authentication successful
-              // Save user data if needed
-                  emit(const AuthAuthenticated());
+        emit(const AuthLoading());
+        final user = await _authService.signInWithEmailAndPassword(
+            email: event.email, password: event.password);
+        if (user != null) {
+          // Authentication successful
+          emit(const AuthAuthenticated());
               } else {
                   emit(const AuthUnauthenticated());
               }
@@ -69,12 +68,11 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       try {
         emit(const AuthLoading());
         final user = await _authService.createUserWithEmailAndPassword(
-            email: event.email, password: event.password);
-            if (user != null) {
-               emit(const AuthAuthenticated());
-              // Account creation successful, navigate to verify email screen
-              
-            } else {
+          email: event.email,
+          password: event.password,
+        );
+        if (user != null) {
+          emit(const AuthVerifyEmail());
                 emit(const AuthUnauthenticated());
               // Account creation failed, display error message
             }

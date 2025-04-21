@@ -29,7 +29,7 @@ class _LoginScreenState extends State<LoginScreen> {
       return BlocListener<AuthBloc, AuthState>(
         listener: (context, state) {
           if (state is AuthAuthenticated) {
-            Navigator.pushReplacementNamed(context, AppRoutes.home);
+               Navigator.pushReplacementNamed(context, AppRoutes.home);
           }
           if (state is AuthFailure) {
             final failure = state.failure;
@@ -218,7 +218,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     child: ElevatedButton(
                       onPressed: () {
                          context.read<AuthBloc>().add(
-                              AuthSignInWithEmailAndPasswordRequested(
+                                AuthSignInWithEmailAndPasswordRequested(
                                   email: _emailController.text,
                                   password: _passwordController.text),
                             );
@@ -233,7 +233,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                     ),
                   ),
-                ), Center(child: TextButton(onPressed: (){Navigator.pushNamed(context, AppRoutes.forgotPassword);}, child: Text("forgot password?"))
+                ), Center(child: TextButton(onPressed: (){Navigator.pushNamed(context, AppRoutes.forgotPassword);}, child: const Text("forgot password?"))
                   ),
                 ),
                 Center(
@@ -289,7 +289,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       ],
                     ),
                   ),
-                ), TextButton(onPressed: (){Navigator.pushNamed(context, AppRoutes.createNewAccount);}, child: Text("create new account")),
+                ), TextButton(onPressed: (){Navigator.pushNamed(context, AppRoutes.createNewAccount);}, child: const Text("create new account")),
                 ],
               ),
             ),
