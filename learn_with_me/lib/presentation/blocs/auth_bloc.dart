@@ -19,17 +19,13 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   })
       : _authService = authService,
         super(const AuthInitial()) {
-    on<AuthCheckRequested>((event, emit) async {
+    on<AuthCheckRequested>((event, emit) async {                                               
       emit(const AuthLoading());
-      final authResult = await authenticateUserUseCase(null);
-      authResult.fold((failure) => emit(AuthFailure(failure: failure)),
-          (user) {
-              if (_authService.isLoggedIn()) {
+        if (_authService.isLoggedIn()) {
           emit(const AuthAuthenticated());
               } else {
-          emit(const AuthUnauthenticated());
+         add(const AuthSignInAnonymouslyRequested());
               }
-          });
       
     });
 
@@ -48,7 +44,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           } on FirebaseAuthException catch (e) {
               emit(AuthFailure(failure: e.code));
           }
-      
+      }
       
        }
     });
@@ -58,9 +54,9 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         emit(const AuthLoading());
         await _authService.signInWithGoogle();
         emit(const AuthAuthenticated());
-      } catch (failure) {
-        emit(AuthFailure(failure: failure));
-      }
+      } catch (e) {
+        emit(AuthFailure(failure: e.toString()));
+      }    
         
        }
     });
@@ -76,9 +72,9 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
                 emit(const AuthUnauthenticated());
               // Account creation failed, display error message
             }
-      } on FirebaseAuthException catch (e) {
+     } on FirebaseAuthException catch (e) {
         emit(AuthFailure(failure: e.code));
-      }
+     }
         
        }
     });
@@ -87,9 +83,9 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         emit(const AuthLoading());
          await _authService.sendPasswordResetEmail(email: event.email);
         emit(const AuthUnauthenticated());
-      } catch (failure) {
-        emit(AuthFailure(failure: failure));
-      }
+      } catch (e) {
+        emit(AuthFailure(failure: e.toString()));
+     }
         
        }
     });
@@ -98,10 +94,22 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         emit(const AuthLoading());
         await _authService.sendEmailVerification();
         emit(const AuthUnauthenticated());
-        
-      } catch (failure) {
-        emit(AuthFailure(failure: failure));
+       } catch (e) {
+        emit(AuthFailure(failure: e.toString()));
       } 
+        
+       }
+    });
+
+     on<AuthSignInAnonymouslyRequested>((event, emit) async {
+      emit(const AuthLoading());
+        final user = await _authService.signInAnonymously();
+        if (user != null) {
+          // Authentication successful
+          emit(const AuthAuthenticated());
+              } else {
+                  emit(const AuthUnauthenticated());
+              }
         
        }
     });
@@ -111,10 +119,9 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         emit(const AuthLoading());
         await _authService.signInWithFacebook();
         emit(const AuthAuthenticated());
-      } catch (failure) {
-        emit(AuthFailure(failure: failure));
-      }
-        
+      } catch (e) {
+        emit(AuthFailure(failure: e.toString()));
+     } 
        }
     });
 
@@ -122,10 +129,10 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       try {
         emit(const AuthLoading());
         await _authService.signOut();
-        emit(const AuthUnauthenticated());
-      } catch (failure) {
-        emit(AuthFailure(failure: failure));
-      } 
+      emit(const AuthUnauthenticated());
+    } catch (e) {
+      emit(AuthFailure(failure: e.toString()));
+      }   
         
        }
     });
@@ -174,6 +181,10 @@ class AuthSignInWithFacebookRequested extends AuthEvent {
   const AuthSignInWithFacebookRequested();
 }
 
+class AuthSignInAnonymouslyRequested extends AuthEvent {
+  const AuthSignInAnonymouslyRequested();
+}
+
 class AuthSignOutRequested extends AuthEvent {
   const AuthSignOutRequested();
 }
@@ -194,11 +205,11 @@ class AuthLoading extends AuthState {
 }
 
 class AuthFailure extends AuthState {
-  final Object failure;
+  final String failure;
   const AuthFailure({required this.failure});
-    @override
-    List<Object?> get props => [failure];
-  }
+  @override
+  List<Object?> get props => [failure];
+}
 class AuthUnauthenticated extends AuthState {
   const AuthUnauthenticated();
 }

@@ -11,6 +11,18 @@ class AuthService {
   Future<UserCredential?> signInWithEmailAndPassword(
       String email, String password) async {
     try {
+      final UserCredential userCredential = await _firebaseAuth.signInAnonymously();
+      return userCredential;
+    } on FirebaseAuthException catch (e) {
+      print("Firebase Auth Exception: ${e.code} - ${e.message}");
+      return null;
+    } catch (e) {
+      print("General Exception: $e");
+      return null;
+    }
+  }
+      String email, String password) async {
+    try {
       final userCredential = await _firebaseAuth.signInWithEmailAndPassword(
         email: email,
         password: password,
