@@ -1,3 +1,5 @@
+import '../models/letter_model.dart';
+
 abstract class LetterLocalDataSource {
-  Future<List<Map<String, dynamic>>> getLetters();
+  Future<List<LetterModel>> getLetters();
 }

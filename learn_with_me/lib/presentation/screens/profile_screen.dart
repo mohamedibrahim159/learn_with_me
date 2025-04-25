@@ -7,7 +7,7 @@ class ProfileScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final getIt = GetIt.instance;
-    final int? selectedAge = getIt.get<int?>();
+    final String? selectedAge = getIt.get<String?>(instanceName: 'childAge');
 
     return Scaffold(
       appBar: AppBar(

@@ -1,3 +1,5 @@
+import '../models/number_model.dart';
+
 abstract class NumberLocalDataSource {
-  Future<List<Map<String, dynamic>>> getNumbers();
+  Future<List<NumberModel>> getNumbers();
 }

@@ -13,7 +13,17 @@ class UserRepositoryImpl implements UserRepository {
   @override
    Future<Either<Failure, User>> authenticateUser() async {
     try {
-      final userModel = await localDataSource.authenticateUser();
+      final userModel =  await localDataSource.authenticateUser();
+      return Right(userModel.toEntity());
+    } catch (e) {
+      return Left(ServerFailure(message: e.toString()));
+    }
+  }
+  
+  @override
+  Future<Either<Failure, User>> loginAnonymously() async {
+    try {
+      final userModel = await localDataSource.loginAnonymously();
       return Right(userModel.toEntity());
     } catch (e) {
       return Left(ServerFailure(message: e.toString()));

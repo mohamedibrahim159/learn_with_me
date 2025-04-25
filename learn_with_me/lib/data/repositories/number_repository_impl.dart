@@ -15,13 +15,11 @@ class NumberRepositoryImpl implements NumberRepository {
   @override
   Either<Failure, List<Number>> getNumbers(NoParams params) async {
     try {
-      final numbers = await numberLocalDataSource.getNumbers();
-        final numberModels = numbers
-        .map((json) => NumberModel.fromJson(json))
-        .toList();
-      return Right(numberModels);
-    } catch (e) {
-          return Left(ServerFailure(message: e.toString()));
+      final result = await numberLocalDataSource.getNumbers();
+      final numbers = result.map((e) => e.toEntity()).toList();
+      return Right(numbers);
+    } on Exception catch (e) {
+      return Left(ServerFailure(message: e.toString()));
     }
   }
 }

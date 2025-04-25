@@ -1,3 +1,6 @@
+import '../models/user_model.dart';
+
 abstract class UserLocalDataSource {
-  Future<Map<String, dynamic>> authenticateUser();
+    Future<UserModel> authenticateUser();
+    Future<UserModel> loginAnonymously();
 }

@@ -93,7 +93,30 @@ class _NumbersScreenState extends State<NumbersScreen> {
                         );
                       }),
                 ),
-                desktopWidget: const SizedBox(),
+                desktopWidget: Padding(
+                  padding: const EdgeInsets.all(20),
+                  child: GridView.builder(
+                      itemCount: state.numbers.length,
+                      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 3),
+                      itemBuilder: (context, index) {
+                        final Number number = state.numbers[index];
+                        return ListTile(
+                          title: Center(
+                            child: Text(
+                              number.number.toString(),
+                              style: const TextStyle(fontSize: 20),
+                            ),
+                        ),
+                         trailing: IconButton(
+                          icon: const Icon(Icons.volume_up),
+                          onPressed: () {
+                            widget.audioService.playAudio(number.audioPath);
+                          },
+                        ),
+                        );
+                      }),
+                ),
               );
               },
             );

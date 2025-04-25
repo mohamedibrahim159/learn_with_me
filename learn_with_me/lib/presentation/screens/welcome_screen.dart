@@ -91,14 +91,16 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                                   backgroundColor: Colors.white,
                                   fixedSize: Size(size.width * 0.8, size.height*0.07)),
                               onPressed: () {
-                                // Handle "GET START" button press
+                                Navigator.pushNamed(context, AppRoutes.genderSelection);
                               },
                               child: const Text(
                                 'GET START',
                                 style: TextStyle(color: AppColors.primaryColor),
                               ),
                             ),
-                          ),
+                          ), 
+                                                  
+                          
                           Padding(
                             padding:  EdgeInsets.only(bottom: size.height*0.04),
                             child: TextButton(

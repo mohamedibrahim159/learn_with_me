@@ -11,6 +11,7 @@ class GenderSelectionScreen extends StatefulWidget {
   State<GenderSelectionScreen> createState() => _GenderSelectionScreenState();
 }
 
+
 class _GenderSelectionScreenState extends State<GenderSelectionScreen> {
   String? selectedGender;
     final TextEditingController _nameController = TextEditingController();
@@ -20,6 +21,7 @@ class _GenderSelectionScreenState extends State<GenderSelectionScreen> {
       selectedGender = gender;
     });
   }
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   bool _preferNotAnswer = false;
   @override
   Widget build(BuildContext context) {
@@ -37,152 +39,157 @@ class _GenderSelectionScreenState extends State<GenderSelectionScreen> {
           ),
           child: Padding(
             padding:
-                EdgeInsets.only(left: size.width * 0.05, right: size.width * 0.05),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Padding(
-                  
-                  padding: EdgeInsets.only(top: size.height * 0.05),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                EdgeInsets.only(left: size.width * 0.05, right: size.width * 0.05),child: Form(
+                  key: _formKey,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.white,
-                            fixedSize:
-                                Size(size.width * 0.2, size.height * 0.05),
-                                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20))
-                                ),
-                        onPressed: () {
-                          Navigator.pushNamed(context, AppRoutes.login);
-                        },
+                      Padding(
+                        padding: EdgeInsets.only(top: size.height * 0.05),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                  backgroundColor: Colors.white,
+                                  fixedSize:
+                                      Size(size.width * 0.2, size.height * 0.05),
+                                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20))
+                                      ),
+                              onPressed: () {
+                                Navigator.pushNamed(context, AppRoutes.login);
+                              },
+                              child: Text(
+                                'Back',
+                                style: TextStyle(
+                                    color: Colors.black,
+                                    fontFamily: 'Viga'),
+                              ),
+                            ),
+                            ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                  backgroundColor: Colors.white,
+                                  fixedSize: Size(size.width * 0.2, size.height * 0.05),
+                                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20))
+                                  ),
+                              onPressed: () {
+                                Navigator.pushNamed(context, AppRoutes.welcome);
+                              },
+                              child: const Text(
+                                'Skip',
+                                style: TextStyle(
+                                    color: Colors.black, fontFamily: 'Viga'),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.only(top: size.height * 0.08),
                         child: Text(
-                          'Back',
+                          "What are your kid's gender and name ?",
+                          textAlign: TextAlign.center,
                           style: TextStyle(
-                              color: Colors.black,
-                              fontFamily: 'Viga'),
+                              color: Colors.white,
+                              fontSize: size.width * 0.05,
+                              fontFamily: "Viga",
+                              ),
                         ),
                       ),
-                      ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.white,
-                            fixedSize: Size(size.width * 0.2, size.height * 0.05),
-                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20))
-                            ),
-                        onPressed: () {
-                          Navigator.pushNamed(context, AppRoutes.welcome);
-                        },
-                        child: const Text(
-                          'Skip',
-                          style: TextStyle(
-                              color: Colors.black, fontFamily: 'Viga'),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                Padding(
-                  padding: EdgeInsets.only(top: size.height * 0.08),
-                  child: Text(
-                    "What are your kid's gender and name ?",
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontSize: size.width * 0.05,
-                        fontFamily: "Viga",
-                        ),
-                  ),
-                ),
-                Padding(
-                  padding: EdgeInsets.only(top: size.height * 0.05),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      GestureDetector(
-                        onTap: () => _selectGender('boy'),
-                        child: Column(
+                      Padding(
+                        padding: EdgeInsets.only(top: size.height * 0.05),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: [
-                            CircleAvatar(
-                              backgroundImage:
-                                  const AssetImage(AppAssets.boyImage),
-                              radius: size.width * 0.18,
-                              backgroundColor: AppColors.transparent,
-                              
+                            GestureDetector(
+                              onTap: () => _selectGender('boy'),
+                              child: Column(
+                                children: [
+                                  CircleAvatar(
+                                    backgroundImage:
+                                        const AssetImage(AppAssets.boyImage),
+                                    radius: size.width * 0.18,
+                                    backgroundColor: AppColors.transparent,
+                                    
+                                  ),
+                                 const Padding(padding: EdgeInsets.only(top: 15)),
+                                 Text(
+                                    "Boy",
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: size.width * 0.05),
+                                  ),
+                                ],
+                              ),
                             ),
-                           const Padding(padding: EdgeInsets.only(top: 15)),
-                           Text(
-                              "Boy",
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: size.width * 0.05),
+                            GestureDetector(
+                              onTap: () => _selectGender('girl'),
+                              child: Column(
+                                children: [
+                                  CircleAvatar(
+                                    backgroundImage:
+                                        const AssetImage(AppAssets.girlImage),
+                                    radius: size.width * 0.18,
+                                    backgroundColor: AppColors.transparent,
+                                  ),
+                                  Text(
+                                    "Girl",
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: size.width * 0.05),
+                                  ),
+                                ],
+                              ),
                             ),
                           ],
                         ),
                       ),
-                      GestureDetector(
-                        onTap: () => _selectGender('girl'),
-                        child: Column(
-                          children: [
-                            CircleAvatar(
-                              backgroundImage:
-                                  const AssetImage(AppAssets.girlImage),
-                              radius: size.width * 0.18,
-                              backgroundColor: AppColors.transparent,
-
-                            ),
-                            Text(
-                              "Girl",
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: size.width * 0.05),
-                            ),
-                          ],
+                      Padding(
+                        padding: EdgeInsets.only(top: size.height * 0.05),
+                        child: Container(
+                          
+                          decoration: BoxDecoration(
+                             color: Colors.white,
+                            borderRadius: BorderRadius.circular(10.0),
+                          ),
+                          child: TextFormField(
+                            maxLines: 1,
+                            controller: _nameController,
+                            decoration: const InputDecoration(
+                                filled: true,
+                                fillColor: Colors.white,
+                                hintText: 'Name of kid',
+                                 border: InputBorder.none,),
+                                  validator: (value) {
+                                    if (value == null || value.isEmpty) {
+                                      return 'Please enter the kid\'s name';
+                                    }
+                                    return null;
+                                  },
+                          ),
                         ),
                       ),
-                    ],
-                  ),
-                ),
-                Padding(
-                  padding: EdgeInsets.only(top: size.height * 0.05),
-                  child: Container(
-                    
-                    decoration: BoxDecoration(
-                       color: Colors.white,
-                      borderRadius: BorderRadius.circular(10.0),
-                    ),
-                    child: TextField(
-                      maxLines: 1,
-                      controller: _nameController,
-                      decoration: const InputDecoration(
-                          filled: true,
-                          fillColor: Colors.white,
-                          hintText: 'Name of kid',
-                           border: InputBorder.none,),
-                    ),
-                  ),
-                ),
-                Padding(
-                  padding: EdgeInsets.only(top: size.height * 0.03),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                    Switch(
-                      value: _preferNotAnswer,
-                      onChanged: (value) {
-                        setState(() {
-                          _preferNotAnswer = value;
-                        });
-                      },
-                      activeColor: Colors.white,
-                    ),
-                    const Text(
-                      "prefer not answer",
-                      style: TextStyle(color: Colors.white,fontFamily: "Viga"),
-                    )
-                  ]),
-                ),
-              Spacer(),
+                      Padding(
+                        padding: EdgeInsets.only(top: size.height * 0.03),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                          Switch(
+                            value: _preferNotAnswer,
+                            onChanged: (value) {
+                              setState(() {
+                                _preferNotAnswer = value;
+                              });
+                            },
+                            activeColor: Colors.white,
+                          ),
+                          const Text(
+                            "prefer not answer",
+                            style: TextStyle(color: Colors.white,fontFamily: "Viga"),
+                          )
+                        ]),
+                      ),
+                    Spacer(),
                   Padding(
                     padding: EdgeInsets.only(bottom: size.height * 0.04),
                     child: ElevatedButton(
@@ -190,15 +197,21 @@ class _GenderSelectionScreenState extends State<GenderSelectionScreen> {
                           fixedSize: Size(size.width,size.height *0.07),
                           backgroundColor: Colors.white
                         ),
-                        onPressed: (selectedGender != null || _preferNotAnswer)
-                            ? () {
-                                Navigator.pushNamed(
-                                    context, AppRoutes.ageSelection);
+                        onPressed: () {
+                              if (_formKey.currentState!.validate()) {
+                                if (selectedGender != null || _preferNotAnswer) {
+                                  Navigator.pushNamed(context, AppRoutes.ageSelection);
+                                } else {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(content: Text('Please select a gender or prefer not to answer')),
+                                  );
+                                }
                               }
-                            : null,
-                        child: const Text("Next",style: TextStyle(color: Colors.black,fontFamily: "Viga"),)),
+                            },
+                        child: const Text("Next",style: TextStyle(color: Colors.black,fontFamily: "Viga"),),)),
                   )
-              ],
+                ],
+              ),
             ),
           ),
         ),

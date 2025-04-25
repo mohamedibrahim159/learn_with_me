@@ -1,33 +1,30 @@
 import 'package:equatable/equatable.dart';
 import '../../domain/entities/number.dart';
 
-class NumberModel extends Number with EquatableMixin {
-  final String name;
-  final String sound;
-  final String image;
-
+class NumberModel extends Number with EquatableMixin{
   const NumberModel({
-    required this.name,
-    required this.sound,
-    required this.image,
-  }) : super(name: name, sound: sound, image: image);
-
-  factory NumberModel.fromJson(Map<String, dynamic> json) {
+    required super.name,
+    required super.sound,
+    required super.image,
+  });
+    factory NumberModel.fromMap(Map<String, dynamic> map) {
     return NumberModel(
-      name: json['name'],
-      sound: json['sound'],
-      image: json['image'],
+      name: map['name'] as String,
+      sound: map['sound'] as String,
+      image: map['image'] as String,
     );
   }
 
-  Map<String, dynamic> toJson() {
-    return {
-      'name': name,
-      'sound': sound,
-      'image': image,
+  Map<String, dynamic> toMap() {
+    return <String, dynamic>{
+      'name':name,
+      'sound':sound,
+      'image':image,
     };
   }
 
   @override
-  List<Object?> get props => [name, sound, image];
+  List<Object?> get props => [
+        name,sound,image
+      ];
 }
