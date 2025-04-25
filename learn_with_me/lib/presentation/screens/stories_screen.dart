@@ -1,93 +1,61 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:learn_with_me/core/services/audio_service.dart';
-import 'package:learn_with_me/app/l10n/app_localizations.dart';
-import 'package:learn_with_me/presentation/blocs/story_bloc.dart';
 import 'package:learn_with_me/presentation/widgets/responsive_widget.dart';
 
 class StoriesScreen extends StatelessWidget {
-  final AudioService audioService;
-  const StoriesScreen({super.key, required this.audioService});
+  const StoriesScreen({super.key});
 
-
-  @override
-  Widget build(BuildContext context) {
-    final storyBloc = BlocProvider.of<StoryBloc>(context)..add(const GetStoriesEvent());
+  @override Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(AppLocalizations.of(context)!.stories),
+      body: Container(
+        decoration: const BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage('assets/images/login_background.jpg'),
+            fit: BoxFit.cover,
+          ),
+        ),
+        child: ResponsiveWidget(
+          mobileWidget: Padding(
+            padding: const EdgeInsets.all(10.0),
+            child: _buildGrid(crossAxisCount: 1),
+          ),
+          tabletWidget: Padding(
+            padding: const EdgeInsets.all(20.0),
+            child: _buildGrid(crossAxisCount: 2),
+          ),
+          desktopWidget: Padding(
+            padding: const EdgeInsets.all(20.0),
+            child: _buildGrid(crossAxisCount: 3),
+          ),
+        ),
       ),
-      body: BlocBuilder<StoryBloc, StoryState>(
-        builder: (context, state) {
-          if (state.isLoading) {
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
-          } else if (state.errorMessage != null) {
-            return Center(
-              child: Text(state.errorMessage!),
-            );
-          } else if (state.stories != null) {
-            return ResponsiveWidget(
-              mobileWidget: Padding(
-                padding: const EdgeInsets.all(10.0),
-                child: ListView.builder(
-                  itemCount: state.stories!.length,
-                  itemBuilder: (context, index) {
-                    final story = state.stories![index];
-                    return ListTile(
-                      title: Text(story.name),
-                      trailing: IconButton(
-                        icon: const Icon(Icons.volume_up),
-                        onPressed: () => audioService.playAudio(story.audioPath),
-                      ),
-                    );
-                  },
-                ),
-              ),
-              tabletWidget: Padding(
-                padding: const EdgeInsets.all(20.0),
-                child: GridView.builder(
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2,
-                  ),
-                  itemCount: state.stories!.length,
-                  itemBuilder: (context, index) {
-                    final story = state.stories![index];
-                    return ListTile(
-                      title: Text(story.name),
-                      trailing: IconButton(
-                        icon: const Icon(Icons.volume_up),
-                        onPressed: () => audioService.playAudio(story.audioPath),
-                      ),
-                    );
-                  },
-                ),
-              ),
-              desktopWidget: Padding(
-                padding: const EdgeInsets.all(20.0),
-                child: GridView.builder(
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 3,
-                  ),
-                  itemCount: state.stories!.length,
-                  itemBuilder: (context, index) {
-                    final story = state.stories![index];
-                    return ListTile(
-                      title: Text(story.name),
-                      trailing: IconButton(
-                        icon: const Icon(Icons.volume_up),
-                        onPressed: () => audioService.playAudio(story.audioPath),
-                      ),
-                    );
-                  },
-                ),
-              ),
-            );
-          } else {
-            return const SizedBox();
-          }
-        },
+    );
+  }
+
+  Widget _buildGrid({required int crossAxisCount}) {
+    return GridView.builder(
+      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: crossAxisCount,
+      ),
+      itemCount: 10,
+      itemBuilder: (context, index) {
+        return _buildItem();
+      },
+    );
+  }
+
+  Widget _buildItem() {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Card(
+        color: Colors.white.withOpacity(0.8),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: const [
+            Icon(Icons.image, size: 50),
+            SizedBox(height: 10),
+            Icon(Icons.volume_up),
+          ],
+        ),
       ),
     );
   }

@@ -1,48 +1,67 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:learn_with_me/app/l10n/app_localizations.dart';
-import 'package:learn_with_me/core/services/audio_service.dart';
-import 'package:learn_with_me/domain/entities/number.dart';
-
-import 'package:learn_with_me/presentation/blocs/number_bloc.dart';
-
 import '../widgets/responsive_widget.dart';
 class NumbersScreen extends StatefulWidget {
-  final AudioService audioService;
-  final NumberBloc numberBloc;
-
   const NumbersScreen({
     super.key,
-    required this.audioService,
-    required this.numberBloc,
   });
-
 
   @override
   State<NumbersScreen> createState() => _NumbersScreenState();
 }
 
-
 class _NumbersScreenState extends State<NumbersScreen> {
   @override
-    void initState() {
-      widget.numberBloc.add(GetNumbersEvent());
-      super.initState();
-    }
-
-    @override
-    Widget build(BuildContext context) {
-      return BlocBuilder<NumberBloc, NumberState>(
-        bloc: widget.numberBloc,
-        builder: (context, state) {
-          return Scaffold(
-            appBar: AppBar(
-              
-            title: Text(AppLocalizations.of(context).numbers),),
-            body: Builder(builder: (context) {
-              return ResponsiveWidget(
-                mobileWidget: Padding(
-                  padding: const EdgeInsets.all(10),
+    return Scaffold(
+      body: Container(
+        decoration: const BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage('assets/images/login_background.jpg'),
+            fit: BoxFit.cover,
+          ),
+        ),
+        child: ResponsiveWidget(
+          mobileWidget: Padding(
+            padding: const EdgeInsets.all(10),
+            child: _buildGrid(context, 2),
+          ),
+          tabletWidget: Padding(
+            padding: const EdgeInsets.all(20),
+            child: _buildGrid(context, 3),
+          ),
+          desktopWidget: Padding(
+            padding: const EdgeInsets.all(20),
+            child: _buildGrid(context, 4),
+          ),
+        ),
+      ),
+    );
+  }
+  Widget _buildGrid(BuildContext context, int crossAxisCount) {
+    return GridView.builder(
+      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: crossAxisCount,
+      ),
+      itemCount: 10,
+      itemBuilder: (context, index) {
+        return Card(
+          color: Colors.white.withOpacity(0.5),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Image.asset(
+                'assets/images/placeholder_image.png',
+                height: 50,
+                width: 50,
+              ),
+              const SizedBox(height: 10),
+              const Icon(Icons.volume_up, size: 30),
+            ],
+          ),
+        );
+      },
+    );
+  }
+}
                   child: Builder(builder: (context) {
                     if (state.isLoading) {
                       return const Center(child: CircularProgressIndicator());

@@ -1,20 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:learn_with_me/app/l10n/app_localizations.dart';
-import 'package:learn_with_me/domain/entities/letter.dart';
-import 'package:learn_with_me/presentation/blocs/letter_bloc.dart';
+import 'package:learn_with_me/core/constants/app_assets.dart';
 import 'package:learn_with_me/presentation/widgets/responsive_widget.dart';
-import '../../../core/services/audio_service.dart';
 
 class LettersScreen extends StatefulWidget {
-  const LettersScreen({
-    Key? key,
-    required this.audioService,
-    required this.letterBloc,
-  }) : super(key: key);
+  const LettersScreen({Key? key}) : super(key: key);
 
-  final AudioService audioService;
-  final LetterBloc letterBloc;
 
   @override
   State<LettersScreen> createState() => _LettersScreenState();

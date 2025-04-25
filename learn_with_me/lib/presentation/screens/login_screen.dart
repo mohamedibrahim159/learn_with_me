@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:learn_with_me/core/constants/app_assets.dart';
-import 'package:learn_with_me/core/errors/failures.dart';
-import 'package:learn_with_me/presentation/blocs/auth_bloc.dart';
-import 'package:learn_with_me/presentation/routes/app_routes.dart';
 import 'package:learn_with_me/core/constants/app_colors.dart';
+import 'package:learn_with_me/presentation/routes/app_routes.dart';
 import 'package:learn_with_me/presentation/widgets/responsive_widget.dart';
 
 
@@ -16,11 +13,9 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController _usernameController = TextEditingController();
-  final TextEditingController _passwordController = TextEditingController();
-  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();  
 
   bool _passwordVisible = false;
-  bool _rememberMe = false;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   @override
