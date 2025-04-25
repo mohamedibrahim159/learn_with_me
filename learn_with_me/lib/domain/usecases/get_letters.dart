@@ -9,10 +9,8 @@ class GetLetters extends UseCase<List<Letter>, NoParams> {
   const GetLetters(this.letterRepository);
 
   @override
-  Either<Failure, List<Letter>> call(NoParams params) async {
-    return await letterRepository.getLetters();
+  Future<Either<Failure, List<Letter>>> call(NoParams params) async {
+    return  await letterRepository.getLetters(params);
   }
 
-  @override
-  
 }

@@ -13,7 +13,7 @@ class NumberRepositoryImpl implements NumberRepository {
   NumberRepositoryImpl({required this.numberLocalDataSource});
 
   @override
-  Either<Failure, List<Number>> getNumbers(NoParams params) async {
+  Future<Either<Failure, List<Number>>> getNumbers(NoParams params) async {
     try {
       final result = await numberLocalDataSource.getNumbers();
       final numbers = result.map((e) => e.toEntity()).toList();

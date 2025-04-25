@@ -10,7 +10,7 @@ class GetAnimals extends UseCase<List<Animal>, NoParams> {
   const GetAnimals(this.contentRepository);
 
   @override
-  Either<Failure, List<Animal>> call(NoParams params) {
-    return contentRepository.getAnimals();
+  Future<Either<Failure, List<Animal>>> call(NoParams params) async {
+    return await contentRepository.getAnimals();
   }
 }

@@ -1,18 +1,14 @@
 import 'package:equatable/equatable.dart';
 
-class Story extends Equatable {
+class Story with EquatableMixin {
   final String name;
-  final String content;
-  final String image;
-  final String sound;
+  final String audioPath;
 
   const Story({
     required this.name,
-    required this.content,
-    required this.image,
-    required this.sound,
+    required this.audioPath,
   });
 
   @override
-  List<Object?> get props => [name, content, image, sound];
+  List<Object?> get props => [name, audioPath];
 }

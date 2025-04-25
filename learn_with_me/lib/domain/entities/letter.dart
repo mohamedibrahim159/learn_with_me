@@ -1,15 +1,13 @@
 import 'package:equatable/equatable.dart';
 
 class Letter with EquatableMixin {
-   String name;
-   String sound;
-   String image;
+  final String letter;
+  final String audioPath;
   const Letter({
-    required this.name,
-    required this.sound,
-    required this.image,
+    required this.letter,
+    required this.audioPath,
   });
 
   @override
-  List<Object?> get props => [name, sound, image];
+  List<Object?> get props => [letter, audioPath];
 }

@@ -1,3 +1,5 @@
+import 'package:dartz/dartz.dart';
+
 import '../../core/usecases/usecase.dart';
 import '../../core/errors/failures.dart';
 import '../entities/story.dart';
@@ -9,8 +11,8 @@ class GetStories extends UseCase<List<Story>, NoParams> {
   GetStories(this.contentRepository);
 
   @override
-  Either<Failure, List<Story>> call(NoParams params) {
-    return contentRepository.getStories();
+  Future<Either<Failure, List<Story>>> call(NoParams params) async {
+    return await contentRepository.getStories();
   }
 
 }

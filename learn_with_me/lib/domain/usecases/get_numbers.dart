@@ -1,3 +1,5 @@
+import 'package:dartz/dartz.dart';
+
 import '../../core/usecases/usecase.dart';
 import '../../core/errors/failures.dart';
 import '../entities/number.dart';
@@ -9,8 +11,8 @@ class GetNumbers extends UseCase<List<Number>, NoParams> {
   const GetNumbers(this.numberRepository);
 
   @override
-  Either<Failure, List<Number>> call(NoParams params) {
-    return numberRepository.getNumbers();
+  Future<Either<Failure, List<Number>>> call(NoParams params) async {
+    return await numberRepository.getNumbers(params);
   }
 
 }

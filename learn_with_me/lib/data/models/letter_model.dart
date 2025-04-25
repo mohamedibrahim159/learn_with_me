@@ -1,32 +1,30 @@
 
+import 'package:equatable/equatable.dart';
+import '../../../domain/entities/letter.dart';
 
-class LetterModel extends Letter with EquatableMixin {
-  final String name;
-  final String sound;
-  final String image;
+class LetterModel extends Letter with EquatableMixin{
+  final String letter;
+  final String audioPath;
 
   const LetterModel({
-    required this.name,
-    required this.sound,
-    required this.image,
-  }) : super(name: name, sound: sound, image: image);
+    required this.letter,
+    required this.audioPath,
+  }) : super(letter: letter, audioPath: audioPath);
 
   factory LetterModel.fromJson(Map<String, dynamic> json) {
     return LetterModel(
-      name: json['name'],
-      sound: json['sound'],
-      image: json['image'],
+      letter: json['letter'],
+      audioPath: json['audioPath'],
     );
   }
-  
+
   Map<String, dynamic> toJson() {
     return {
-      'name': name,
-      'sound': sound,
-      'image': image,
+      'letter': letter,
+      'audioPath': audioPath,
     };
   }
 
   @override
-  List<Object?> get props => [name, sound, image];
+  List<Object?> get props => [letter, audioPath];
 }

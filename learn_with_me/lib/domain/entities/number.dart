@@ -1,20 +1,14 @@
 import 'package:equatable/equatable.dart';
 
-class Number extends Equatable {
-  final String name;
-  final String sound;
-  final String image;
+class Number with EquatableMixin {
+  final int number;
+  final String audioPath;
 
   const Number({
-    required this.name,
-    required this.sound,
-    required this.image,
+    required this.number,
+    required this.audioPath,
   });
 
   @override
-  List<Object?> get props => [
-        name,
-        sound,
-        image,
-      ];
+  List<Object?> get props => [number, audioPath];
 }
