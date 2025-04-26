@@ -1,14 +1,16 @@
 
 
-# Learn With Me - Educational App for Children
+# Project: Learn With Me - Educational App for Kids
 
-[![GitHub Repo](https://img.shields.io/badge/GitHub-Repo-blue)](https://github.com/mohamedibrahim159/LearnWithMe.git)
+## Project Status
 
-**Learn With Me** is an engaging educational application built with Flutter, designed specifically for children. Our mission is to provide a fun and interactive learning environment that supports both Arabic and English languages. This app uses Clean Architecture to ensure maintainability and scalability and is integrated with Firebase for user authentication.
-
-This project is a Flutter application aimed at children's education. It leverages the **BLoC/Cubit** pattern for state management and adheres to **Clean Architecture** principles for better code organization. It also utilizes **Firebase** services and supports **multiple languages** (Arabic and English).
-
-**GitHub Link:** [https://github.com/mohamedibrahim159/LearnWithMe.git](https://github.com/mohamedibrahim159/LearnWithMe.git)
+-   **Code Refactoring:** All screens in the application have been adjusted to match the new design.
+-   **Code Cleanup:** Unnecessary code has been removed.
+-   **Firebase Removal:** All Firebase services have been removed.
+-   **Backend API Ready:** The application is now ready to work with a backend API without Firebase.
+-   **Authentication Screens:** Login, registration, forgot password, and reset password screens have been prepared for integration with a backend API.
+-   **App Structure:** The main structure of the application has been built with main sections such as (Home, Letters, Numbers, Animals, Stories, For Parents, For Learners).
+-   **Placeholders:** Placeholders for images and audio have been added across different screens.
 
 ## Project Description
 
@@ -16,18 +18,26 @@ The **Learn With Me** app is designed to provide educational content for childre
 
 ## Features
 
-*   **Educational Content Sections:**
-    *   Letters
-    *   Numbers
-    *   Animals
-    *   Stories
-*   **User Sections:** Distinct sections for "For Parents" and "For Learners".
-*   **Audio Content:** Ready for integration with external APIs for fetching audio content.
-*   **Responsive UI:** Designed to work on all screen sizes (phones, tablets).
-*   **Firebase Authentication:** Uses Firebase for anonymous guest login.
-*   **Mock Data:** Uses mock data until the real API is integrated.
-*   **State Management:** Employs BLoC/Cubit for state management.
-*   **Clean Architecture:** Adheres to Clean Architecture principles.
+-   **Educational Content Sections:**
+    -   Letters
+    -   Numbers
+    -   Animals
+    -   Stories
+-   **User Sections:** Distinct sections for "For Parents" and "For Learners".
+-   **Audio Content:** Ready for integration with external APIs for fetching audio content.
+-   **Responsive UI:** Designed to work on all screen sizes (phones, tablets).
+-   **Backend Ready:** The application is now ready to work with a backend API without Firebase.
+-   **State Management:** Employs BLoC/Cubit for state management.
+-   **Clean Architecture:** Adheres to Clean Architecture principles.
+
+## What We Need
+
+-   **Backend API Information:**
+    -   API endpoints.
+    -   Description of data sent and received for each endpoint.
+    -   Authentication method.
+-   **Database Information:**
+    -   Database schema.
 
 ## Getting Started
 
