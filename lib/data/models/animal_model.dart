@@ -20,6 +20,10 @@ class AnimalModel extends Animal with EquatableMixin {
     );
   }
 
+  Animal toEntity() {
+    return Animal(name: name, sound: sound, image: image);
+  }
+
   Map<String, dynamic> toJson() {
     return {
       'name': name,

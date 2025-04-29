@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
 
-class Animal with EquatableMixin{
-  final String name;
+class Animal with EquatableMixin {
+  final String name; 
   final String sound;
   final String image;
 

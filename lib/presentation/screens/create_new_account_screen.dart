@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:learn_with_me/core/constants/app_assets.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:learn_with_me/core/constants/app_colors.dart';
+import 'package:learn_with_me/presentation/blocs/auth/auth_event.dart';
+import 'package:learn_with_me/presentation/blocs/auth/auth_bloc.dart';
 import 'package:learn_with_me/presentation/routes/app_routes.dart';
+
 
 class CreateNewAccountScreen extends StatefulWidget {
   const CreateNewAccountScreen({Key? key}) : super(key: key);
@@ -16,20 +19,15 @@ class _CreateNewAccountScreenState extends State<CreateNewAccountScreen> {
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _confirmPasswordController = TextEditingController();
   bool _passwordVisible = false;
-    final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
   @override
   Widget build(BuildContext context) {
-     final size = MediaQuery.of(context).size;
-      return  Scaffold(
-          body: Container(
-              decoration: BoxDecoration(
-                image: DecorationImage(
-                  image: AssetImage(AppAssets.loginBackgroundImage),
-                  fit: BoxFit.cover,
-                ),
-              ),
-              child: SingleChildScrollView(
-                child: Form(key: _formKey,
+    final size = MediaQuery.of(context).size;
+    return Scaffold(
+      body: SingleChildScrollView(
+        child: Form(
+          key: _formKey,
                 child: Column(
                   mainAxisSize: MainAxisSize.max,
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -38,7 +36,7 @@ class _CreateNewAccountScreenState extends State<CreateNewAccountScreen> {
                       padding: EdgeInsets.only(
                           top: size.height * 0.05, left: size.width * 0.04,),
                       child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
                           ElevatedButton(
                             style: ElevatedButton.styleFrom(
@@ -68,11 +66,13 @@ class _CreateNewAccountScreenState extends State<CreateNewAccountScreen> {
                               style: TextStyle(color: Colors.black),
                             ),
                           ),
-                          ],),),
+                        ],
+                      ),
+                    ),
                     Center(
                       child: Padding(
                         padding: EdgeInsets.only(top: size.height * 0.1),
-                        child: Text(
+                        child: const Text(
                           'Hello!',
                           style: TextStyle(
                               fontFamily: 'Viga',
@@ -81,87 +81,141 @@ class _CreateNewAccountScreenState extends State<CreateNewAccountScreen> {
                         ),
                       ),
                     ),
-                       Padding(
-                      padding:  EdgeInsets.only(left: size.width*0.05,bottom: size.height*0.05),
-                      child: Text(
+                    Padding(
+                      padding: EdgeInsets.only(left: size.width * 0.05, bottom: size.height * 0.05),
+                      child: const Text(
                         'Create New Account',
                         style: TextStyle(
-                            fontSize: size.width * 0.04,
-                            color: Colors.white,
-                          ),),),
-                   Center(
-                      child:  Padding(
-                        padding:  EdgeInsets.only(bottom: size.height*0.03),
+                          fontSize: size.width * 0.04,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+                    Center(
+                      child: Padding(
+                        padding: EdgeInsets.only(bottom: size.height * 0.03),
                         child: TextFormField(
-                           maxLines: 1,
+                          maxLines: 1,
                           controller: _usernameController,
-                           decoration: InputDecoration(filled: true, fillColor: Colors.white, prefixIcon: const Icon(Icons.person,color: AppColors.primaryColor,),
+                          decoration: InputDecoration(
+                            filled: true,
+                            fillColor: Colors.white,
+                            prefixIcon: const Icon(
+                              Icons.person,
+                              color: AppColors.primaryColor,
+                            ),
                             hintText: 'Username',
-                             border: OutlineInputBorder(borderRadius: BorderRadius.circular(10.0),), fixedSize: Size(size.width * 0.9, size.height * 0.07)
-                           ),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10.0),
+                            ),
+                             
+                          ),
                           validator: (value) {
                             if (value == null || value.isEmpty) {
                               return 'Please enter your username';
                             }
                             return null;
-                           ),),),
-                   Center(
-                      child:  Padding(
-                        padding:  EdgeInsets.only(bottom: size.height*0.03),
+                          },
+                        ),
+                      ),
+                    ),
+                    Center(
+                      child: Padding(
+                        padding: EdgeInsets.only(bottom: size.height * 0.03),
                         child: TextFormField(
-                           maxLines: 1,
+                          maxLines: 1,
                           controller: _emailController,
-                           decoration: InputDecoration(filled: true, fillColor: Colors.white, prefixIcon: const Icon(Icons.email,color: AppColors.primaryColor,),
-                            hintText: 'Email',
-                             border: OutlineInputBorder(borderRadius: BorderRadius.circular(10.0),), fixedSize: Size(size.width * 0.9, size.height * 0.07)
-                           ),
-                                validator: (value) {
-                                if (value == null || value.isEmpty) {
-                                  return 'Please enter your email';
-                                } else if (!value.contains('@')) {
-                                  return 'Please enter a valid email';
-                                }
-                                return null;
-                              },
-                           ),),),
-                   Center(
-                      child:  Padding(
-                        padding:  EdgeInsets.only(bottom: size.height*0.03),
+                          decoration: InputDecoration(
+                              filled: true,
+                              fillColor: Colors.white,
+                              prefixIcon: const Icon(
+                                Icons.email,
+                                color: AppColors.primaryColor,
+                              ),
+                              hintText: 'Email',
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10.0),
+                              ),
+                              ),
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Please enter your email';
+                            } else if (!value.contains('@')) {
+                              return 'Please enter a valid email';
+                            }
+                            return null;
+                          },
+                        ),
+                      ),
+                    ),
+                    Center(
+                      child: Padding(
+                        padding: EdgeInsets.only(bottom: size.height * 0.03),
                         child: TextFormField(
-                           controller: _passwordController,
-                           maxLines: 1,
-                           obscureText: !_passwordVisible,
-                           decoration: InputDecoration(filled: true, fillColor: Colors.white, prefixIcon: const Icon(Icons.lock,color: AppColors.primaryColor,),suffixIcon: IconButton(icon: Icon(_passwordVisible ? Icons.visibility_off : Icons.visibility), onPressed: () {
-                                  setState(() {
-                                    _passwordVisible = !_passwordVisible;
-                                  });
-                                },),
+                          controller: _passwordController,
+                          maxLines: 1,
+                          obscureText: !_passwordVisible,
+                          decoration: InputDecoration(
+                            filled: true,
+                            fillColor: Colors.white,
+                            prefixIcon: const Icon(
+                              Icons.lock,
+                              color: AppColors.primaryColor,
+                            ),
+                            suffixIcon: IconButton(
+                              icon: Icon(_passwordVisible
+                                  ? Icons.visibility_off
+                                  : Icons.visibility),
+                              onPressed: () {
+                                setState(() {
+                                  _passwordVisible = !_passwordVisible;
+                                });
+                              },
+                            ),
                             hintText: 'Password',
-                             border: OutlineInputBorder(borderRadius: BorderRadius.circular(10.0),), fixedSize: Size(size.width * 0.9, size.height * 0.07)
-                           ),
-                                validator: (value) {
-                                if (value == null || value.isEmpty) {
-                                  return 'Please enter your password';
-                                }
-                                return null;
-                              },
-                           ),),),
-                   Center(
-                      child:  Padding(
-                        padding:  EdgeInsets.only(bottom: size.height*0.03),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10.0),
+                            ),
+                          ),
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Please enter your password';
+                            }
+                            return null;
+                          },
+                        ),
+                      ),
+                    ),
+                    Center(
+                      child: Padding(
+                        padding: EdgeInsets.only(bottom: size.height * 0.03),
                         child: TextFormField(
-                           controller: _confirmPasswordController,
-                           maxLines: 1,
-                           obscureText: !_passwordVisible,
-                           decoration: InputDecoration(filled: true, fillColor: Colors.white, prefixIcon: const Icon(Icons.lock,color: AppColors.primaryColor,),suffixIcon: IconButton(icon: Icon(_passwordVisible ? Icons.visibility_off : Icons.visibility), onPressed: () {
-                                  setState(() {
-                                    _passwordVisible = !_passwordVisible;
-                                  });
-                                },),
+                          controller: _confirmPasswordController,
+                          maxLines: 1,
+                          obscureText: !_passwordVisible,
+                          decoration: InputDecoration(
+                            filled: true,
+                            fillColor: Colors.white,
+                            prefixIcon: const Icon(
+                              Icons.lock,
+                              color: AppColors.primaryColor,
+                            ),
+                            suffixIcon: IconButton(
+                              icon: Icon(_passwordVisible
+                                  ? Icons.visibility_off
+                                  : Icons.visibility),
+                              onPressed: () {
+                                setState(() {
+                                  _passwordVisible = !_passwordVisible;
+                                });
+                              },
+                            ),
                             hintText: 'Confirm Password',
-                             border: OutlineInputBorder(borderRadius: BorderRadius.circular(10.0),), fixedSize: Size(size.width * 0.9, size.height * 0.07)
-                           ),
-                           validator: (value) {
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10.0),
+                            ),
+                          ),
+                          validator: (value) {
                               if (value == null || value.isEmpty) {
                                 return 'Please confirm your password';
                               } else if (value != _passwordController.text) {
@@ -169,102 +223,33 @@ class _CreateNewAccountScreenState extends State<CreateNewAccountScreen> {
                               }
                               return null;
                             },
-                           ),),),
-                   Center(
+                        ),
+                      ),
+                    ),
+                    Center(
                       child: Padding(
-                        padding:  EdgeInsets.only(top: size.height*0.03,bottom: size.height*0.03),
-                        child: ElevatedButton(onPressed: (){},style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.green,
-                            fixedSize: Size(size.width * 0.9, size.height * 0.07)
-                        ), child: const Text('Create Account', style: TextStyle(color: AppColors.primaryColor),),),),),
-                   
-                  ],),),),),);
-  }
-}
-              children: [
-                TextField(
-                  controller: _emailController,
-                  decoration: InputDecoration(
-                    filled: true,
-                    fillColor: Colors.white,
-                    prefixIcon: const Icon(
-                      Icons.email,
-                      color: AppColors.primaryColor,
-                    ),
-                    hintText: 'Email',
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10.0),
-                          ),
-                  ),
-                ),
-                const SizedBox(height: 16),
-                TextField(
-                  controller: _passwordController,
-                  obscureText: !_passwordVisible,
-                  decoration: InputDecoration(
-                      filled: true,
-                      fillColor: Colors.white,
-                      prefixIcon: const Icon(
-                        Icons.lock,
-                        color: AppColors.primaryColor,
-                      ),
-                      suffixIcon: IconButton(
-                          icon: Icon(_passwordVisible
-                              ? Icons.visibility_off
-                              : Icons.visibility),
+                        padding: EdgeInsets.only(top: size.height * 0.03, bottom: size.height * 0.03),
+                        child: ElevatedButton(
                           onPressed: () {
-                            setState(() {
-
-                            _passwordVisible = !_passwordVisible;
-                          });
-                        }),
-                    hintText: 'Password',
-                     border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10.0),
+                            if (_formKey.currentState!.validate()) {
+                              context.read<AuthBloc>().add(AuthCreateNewAccountRequested(
+                                  email: _emailController.text, password: _passwordController.text));
+                            }
+                          },
+                          style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.green,
+                               ),
+                          child: const Text(
+                            'Create Account',
+                            style: TextStyle(color: AppColors.primaryColor),
                           ),
-                  ),
-                ),
-                const SizedBox(height: 16),
-                TextField(
-                  controller: _confirmPasswordController,
-                  obscureText: !_passwordVisible,
-                  decoration: InputDecoration(
-                    filled: true,
-                    fillColor: Colors.white,
-                    prefixIcon: const Icon(
-                      Icons.lock,
-                      color: AppColors.primaryColor,
-                    ),
-                    hintText: 'Confirm Password',
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10.0),
-                    ),
+                        ),
                       ),
+                    ),
+                  ],
                 ),
-                const SizedBox(height: 32),
-                ElevatedButton(
-                  onPressed: () {
-                    if (_passwordController.text ==
-                        _confirmPasswordController.text) {
-                      context.read<AuthBloc>().add(
-                          AuthCreateNewAccountRequested(
-                              email: _emailController.text,
-                              password: _passwordController.text));
-                    } else {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                            content: Text(
-                                "Password and Confirm password isn't matched")),
-                      );
-                    }
-                  },
-                  child: const Text('Create Account'),
-                ),
-              ],
-            ),
-          ),
         ),
-      );
-    });
+      ),
+    );
   }
 }

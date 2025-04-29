@@ -1,8 +1,11 @@
+--- a/lib/presentation/screens/gender_selection_screen.dart
++++ b/lib/presentation/screens/gender_selection_screen.dart
 import 'package:flutter/material.dart';
+import 'package:learn_with_me/presentation/routes/app_routes.dart';
 import 'package:learn_with_me/core/constants/app_assets.dart';
 import 'package:learn_with_me/core/constants/app_colors.dart';
 import 'package:learn_with_me/presentation/widgets/responsive_widget.dart';
-import '../routes/app_routes.dart';
+import 'package:learn_with_me/presentation/routes/app_routes.dart';
 
 class GenderSelectionScreen extends StatefulWidget {
   const GenderSelectionScreen({super.key});
@@ -11,17 +14,18 @@ class GenderSelectionScreen extends StatefulWidget {
   State<GenderSelectionScreen> createState() => _GenderSelectionScreenState();
 }
 
-
 class _GenderSelectionScreenState extends State<GenderSelectionScreen> {
   String? selectedGender;
-    final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _nameController = TextEditingController();
 
   void _selectGender(String gender) {
     setState(() {
       selectedGender = gender;
     });
   }
+
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
   bool _preferNotAnswer = false;
   @override
   Widget build(BuildContext context) {
@@ -29,22 +33,18 @@ class _GenderSelectionScreenState extends State<GenderSelectionScreen> {
       return Scaffold(
         extendBodyBehindAppBar: true,
         resizeToAvoidBottomInset: false,
-        
         body: Container(
-          decoration: BoxDecoration(
-            image: DecorationImage(
-              image: AssetImage(AppAssets.genderSelectionBackgroundImage),
-              fit: BoxFit.cover,
-            ),
-          ),
-          child: Padding(
-            padding:
-                EdgeInsets.only(left: size.width * 0.05, right: size.width * 0.05),child: Form(
+          padding: EdgeInsets.only(
+              left: size.width * 0.05, right: size.width * 0.05),
+          child: Form(
                   key: _formKey,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Padding(
+
+
+
                         padding: EdgeInsets.only(top: size.height * 0.05),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -54,15 +54,17 @@ class _GenderSelectionScreenState extends State<GenderSelectionScreen> {
                                   backgroundColor: Colors.white,
                                   fixedSize:
                                       Size(size.width * 0.2, size.height * 0.05),
-                                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20))
-                                      ),
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius:
+                                          BorderRadius.circular(20))),
                               onPressed: () {
                                 Navigator.pushNamed(context, AppRoutes.login);
                               },
-                              child: Text(
+                              child: const Text(
                                 'Back',
                                 style: TextStyle(
-                                    color: Colors.black,
+
+                                    color: const Color.fromARGB(255, 0, 0, 0),
                                     fontFamily: 'Viga'),
                               ),
                             ),
@@ -70,8 +72,9 @@ class _GenderSelectionScreenState extends State<GenderSelectionScreen> {
                               style: ElevatedButton.styleFrom(
                                   backgroundColor: Colors.white,
                                   fixedSize: Size(size.width * 0.2, size.height * 0.05),
-                                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20))
-                                  ),
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius:
+                                          BorderRadius.circular(20))),
                               onPressed: () {
                                 Navigator.pushNamed(context, AppRoutes.welcome);
                               },
@@ -85,9 +88,9 @@ class _GenderSelectionScreenState extends State<GenderSelectionScreen> {
                         ),
                       ),
                       Padding(
-                        padding: EdgeInsets.only(top: size.height * 0.08),
-                        child: Text(
-                          "What are your kid's gender and name ?",
+                         padding: EdgeInsets.only(top: size.height * 0.08),
+                        child: const Text(
+                          const "What are your kid's gender and name ?",
                           textAlign: TextAlign.center,
                           style: TextStyle(
                               color: Colors.white,
@@ -107,13 +110,11 @@ class _GenderSelectionScreenState extends State<GenderSelectionScreen> {
                                 children: [
                                   CircleAvatar(
                                     backgroundImage:
-                                        const AssetImage(AppAssets.boyImage),
+                                         AssetImage(AppAssets.boyImage),
                                     radius: size.width * 0.18,
-                                    backgroundColor: AppColors.transparent,
-                                    
-                                  ),
-                                 const Padding(padding: EdgeInsets.only(top: 15)),
-                                 Text(
+                                    backgroundColor: Colors.transparent,
+                                   ),
+                                 const Text(
                                     "Boy",
                                     style: TextStyle(
                                         color: Colors.white,
@@ -128,11 +129,11 @@ class _GenderSelectionScreenState extends State<GenderSelectionScreen> {
                                 children: [
                                   CircleAvatar(
                                     backgroundImage:
-                                        const AssetImage(AppAssets.girlImage),
+                                         AssetImage(AppAssets.girlImage),
                                     radius: size.width * 0.18,
                                     backgroundColor: AppColors.transparent,
                                   ),
-                                  Text(
+                                  const Text(
                                     "Girl",
                                     style: TextStyle(
                                         color: Colors.white,
@@ -148,14 +149,15 @@ class _GenderSelectionScreenState extends State<GenderSelectionScreen> {
                         padding: EdgeInsets.only(top: size.height * 0.05),
                         child: Container(
                           
-                          decoration: BoxDecoration(
-                             color: Colors.white,
+                           decoration: BoxDecoration(
+                            color: Colors.white,
                             borderRadius: BorderRadius.circular(10.0),
                           ),
                           child: TextFormField(
                             maxLines: 1,
                             controller: _nameController,
-                            decoration: const InputDecoration(
+                            decoration:  InputDecoration(
+
                                 filled: true,
                                 fillColor: Colors.white,
                                 hintText: 'Name of kid',
@@ -164,7 +166,7 @@ class _GenderSelectionScreenState extends State<GenderSelectionScreen> {
                                     if (value == null || value.isEmpty) {
                                       return 'Please enter the kid\'s name';
                                     }
-                                    return null;
+                                  return null;
                                   },
                           ),
                         ),
@@ -174,7 +176,7 @@ class _GenderSelectionScreenState extends State<GenderSelectionScreen> {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                          Switch(
+                            Switch(
                             value: _preferNotAnswer,
                             onChanged: (value) {
                               setState(() {
@@ -183,33 +185,41 @@ class _GenderSelectionScreenState extends State<GenderSelectionScreen> {
                             },
                             activeColor: Colors.white,
                           ),
-                          const Text(
-                            "prefer not answer",
-                            style: TextStyle(color: Colors.white,fontFamily: "Viga"),
-                          )
-                        ]),
+                            const Text(
+                              "prefer not answer",
+                              style:
+                                  TextStyle(color: Colors.white, fontFamily: "Viga"),
+                            )
+                          ]),
                       ),
-                    Spacer(),
-                  Padding(
-                    padding: EdgeInsets.only(bottom: size.height * 0.04),
-                    child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          fixedSize: Size(size.width,size.height *0.07),
-                          backgroundColor: Colors.white
-                        ),
-                        onPressed: () {
+                      const Spacer(),
+                      Padding(
+                          padding: EdgeInsets.only(bottom: size.height * 0.04),
+                          child: ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                                fixedSize: Size(size.width, size.height * 0.07),
+                                backgroundColor: Colors.white),
+                            onPressed: () {
                               if (_formKey.currentState!.validate()) {
                                 if (selectedGender != null || _preferNotAnswer) {
-                                  Navigator.pushNamed(context, AppRoutes.ageSelection);
+                                  Navigator.pushNamed(
+                                      context, AppRoutes.ageSelection);
                                 } else {
                                   ScaffoldMessenger.of(context).showSnackBar(
-                                    const SnackBar(content: Text('Please select a gender or prefer not to answer')),
+                                    const SnackBar(
+                                        content: Text(
+                                            'Please select a gender or prefer not to answer')),
                                   );
                                 }
                               }
                             },
-                        child: const Text("Next",style: TextStyle(color: Colors.black,fontFamily: "Viga"),),)),
-                  )
+                            child: const Text(
+                              "Next",
+                              style: TextStyle(
+                                  color: Colors.black, fontFamily: "Viga"),
+                            ),
+                          )),
+                    )
                 ],
               ),
             ),

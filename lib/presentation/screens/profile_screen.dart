@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:learn_with_me/core/constants/app_colors.dart';
 import 'package:get_it/get_it.dart';
 
 class ProfileScreen extends StatelessWidget {
@@ -21,7 +22,7 @@ class ProfileScreen extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text('Selected Age: $selectedAge'),
+                  Text('Selected Age: $selectedAge',style: const TextStyle(fontSize: 16),),
                   const SizedBox(width: 8),
                   const Icon(Icons.check_circle, color: Colors.green),
                 ],

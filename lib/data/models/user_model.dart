@@ -20,6 +20,10 @@ class UserModel extends User with EquatableMixin {
     );
   }
 
+  User toEntity() {
+    return User(id: id, name: name, email: email);
+  }
+
   Map<String, dynamic> toJson() {
     return {
       'id': id,

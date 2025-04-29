@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:learn_with_me/core/constants/app_colors.dart';
 import 'package:learn_with_me/core/constants/app_assets.dart';
-import '../routes/app_routes.dart';
+import 'package:learn_with_me/presentation/routes/app_routes.dart';
 import 'package:learn_with_me/presentation/widgets/responsive_widget.dart';
-import '../../core/constants/app_colors.dart';
+
 
 class WelcomeScreen extends StatefulWidget {
   const WelcomeScreen({Key? key}) : super(key: key);
@@ -48,13 +49,13 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                         children: [
                            Padding(
                              padding: EdgeInsets.only(bottom: size.height*0.02),
-                            child: Text(
-                              'fun adventure to learn letters',
+                            child:  Text(
+                              const 'fun adventure to learn letters',
                               style: TextStyle(
                                   fontSize: size.width * 0.06,
                                   color: const Color(0xFFFFC107),
                                   fontFamily: 'Viga'),
-                              textAlign: TextAlign.center,
+                              textAlign: TextAlign.center
                             ),
                           ),
                           Padding(
@@ -69,9 +70,6 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                                     color: Colors.orange,
                                     shape: BoxShape.circle,
                                   ),
-                                ),
-                                SizedBox(
-                                  width: size.width*0.03,
                                 ),
                                 Container(
                                   width: size.width*0.03,
@@ -91,12 +89,12 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                                   backgroundColor: Colors.white,
                                   fixedSize: Size(size.width * 0.8, size.height*0.07)),
                               onPressed: () {
-                                Navigator.pushNamed(context, AppRoutes.genderSelection);
+                                Navigator.pushNamed(context, AppRoutes.createNewAccount);
                               },
                               child: const Text(
                                 'GET START',
                                 style: TextStyle(color: AppColors.primaryColor),
-                              ),
+                              )
                             ),
                           ), 
                                                   
@@ -104,11 +102,13 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                           Padding(
                             padding:  EdgeInsets.only(bottom: size.height*0.04),
                             child: TextButton(
-                              onPressed: () {},
-                              child: const Text(
-                                'I ALREADY HAVE AN ACCOUNT',
+                              onPressed: () {
+                                 Navigator.pushNamed(context, AppRoutes.login);
+                              },
+                              child: const  Text(
+                                 'I ALREADY HAVE AN ACCOUNT',
                                 style: TextStyle(color: Colors.white),
-                              ),
+                              )
                             ),
                           ),
                         ],

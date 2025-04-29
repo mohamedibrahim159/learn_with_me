@@ -25,6 +25,10 @@ class LetterModel extends Letter with EquatableMixin{
     };
   }
 
+  Letter toEntity() {
+    return Letter(letter: letter, audioPath: audioPath);
+  }
+
   @override
   List<Object?> get props => [letter, audioPath];
 }

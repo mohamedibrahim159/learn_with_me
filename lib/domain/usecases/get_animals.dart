@@ -1,10 +1,11 @@
+import 'package:dartz/dartz.dart';
 import 'package:learn_with_me/core/usecases/usecase.dart';
 
-import '../../core/errors/failures.dart';
+import '../../core/errors/failures.dart'; 
 import '../entities/animal.dart';
 import '../repositories/content_repository.dart';
 
-class GetAnimals extends UseCase<List<Animal>, NoParams> {
+class GetAnimals extends UseCase<List<Animal>, NoParams> { 
   final ContentRepository contentRepository;
 
   const GetAnimals(this.contentRepository);

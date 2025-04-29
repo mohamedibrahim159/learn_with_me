@@ -1,8 +1,8 @@
 import 'package:equatable/equatable.dart';
 
 class Number with EquatableMixin {
-  final int number;
-  final String audioPath;
+  final int number; 
+  final String audioPath; 
 
   const Number({
     required this.number,

@@ -17,6 +17,10 @@ class NumberModel extends Number with EquatableMixin {
     );
   }
 
+  Number toEntity() {
+    return Number(number: number, audioPath: audioPath);
+  }
+
   Map<String, dynamic> toJson() {
     return <String, dynamic>{
       'number': number,

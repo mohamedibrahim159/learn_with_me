@@ -1,3 +1,5 @@
+import 'package:dartz/dartz.dart';
+
 import '../../core/errors/failures.dart';
 import '../../core/usecases/usecase.dart';
 import '../entities/letter.dart';
@@ -8,9 +10,8 @@ class GetLetters extends UseCase<List<Letter>, NoParams> {
 
   const GetLetters(this.letterRepository);
 
-  @override
+    @override
   Future<Either<Failure, List<Letter>>> call(NoParams params) async {
     return  await letterRepository.getLetters(params);
   }
-
 }

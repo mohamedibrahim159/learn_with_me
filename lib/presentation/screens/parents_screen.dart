@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:learn_with_me/core/constants/app_colors.dart';
 import 'package:get_it/get_it.dart';
 
 class ParentsScreen extends StatelessWidget {
@@ -13,7 +14,7 @@ class ParentsScreen extends StatelessWidget {
         appBar: AppBar(
           title: const Text("For Parents"),
           leading: IconButton(
-            icon: const Icon(Icons.arrow_back,color: Colors.black,),
+            icon: const Icon(Icons.arrow_back,color: AppColors.black,),
             onPressed: () {
               Navigator.of(context).pop();
             },
@@ -30,18 +31,14 @@ class ParentsScreen extends StatelessWidget {
               ),
               const SizedBox(height: 20),
               if (savedChildName != null && savedAge != null) ...[
-                Text("Child's Name: $savedChildName"),
-                Text("Selected Age: $savedAge"),
+                Text("Child's Name: $savedChildName",style: const TextStyle(fontSize: 16),),
+                Text("Selected Age: $savedAge",style: const TextStyle(fontSize: 16),),
               ] else
                 const Text(
                   "No data saved",
                   style: TextStyle(fontSize: 16),
                 ),
             ],
-          ),
-        ));
-  }
-}
-    );
+          ),)));
   }
 }

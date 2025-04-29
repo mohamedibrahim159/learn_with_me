@@ -5,7 +5,7 @@ import '../entities/user.dart';
 import '../repositories/user_repository.dart';
 import '../../core/usecases/usecase.dart';
 
-class AuthenticateUser extends UseCase<User, void> {
+class AuthenticateUser extends UseCase<User, NoParams> {
   final UserRepository userRepository;
 
   AuthenticateUser({required this.userRepository}); 

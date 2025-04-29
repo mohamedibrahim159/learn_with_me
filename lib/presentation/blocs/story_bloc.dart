@@ -1,13 +1,13 @@
-import 'dart:async';
-
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:learn_with_me/core/errors/failures.dart';
 import 'package:learn_with_me/core/usecases/usecase.dart';
 import 'package:learn_with_me/domain/entities/story.dart';
-import '../../domain/usecases/get_stories.dart';
+import 'package:learn_with_me/domain/usecases/get_stories.dart';
+import 'package:learn_with_me/presentation/blocs/failures_bloc.dart';
 
 part 'story_event.dart';
+
 part 'story_state.dart';
 
 class StoryBloc extends Bloc<StoryEvent, StoryState> {
@@ -25,17 +25,11 @@ class StoryBloc extends Bloc<StoryEvent, StoryState> {
         (failure) {
           emit(state.copyWith(
             isLoading: false,
-            errorMessage: _mapFailureToMessage(failure),
+            errorMessage: mapFailureToMessage(failure),
           ));
         },
-        (stories) {
-          emit(state.copyWith(isLoading: false, stories: stories));
-        },
+        (stories) => emit(state.copyWith(isLoading: false, stories: stories)),
       );
     });
-  }
-
-  String _mapFailureToMessage(Failure failure) {
-    return failure.message;
   }
 }

@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
+import 'package:learn_with_me/core/constants/app_assets.dart';
+import 'package:learn_with_me/core/constants/app_colors.dart';
+import 'package:learn_with_me/presentation/routes/app_routes.dart';
+import 'package:learn_with_me/presentation/widgets/responsive_widget.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import '../../core/constants/app_colors.dart';
-import '../routes/app_routes.dart';
-import '../../core/constants/app_assets.dart';
-import '../widgets/responsive_widget.dart';
+
 
 
 class ForLearnersScreen extends StatefulWidget {
@@ -32,10 +33,10 @@ class _ForLearnersScreenState extends State<ForLearnersScreen> {
   void _loadSavedData() {
     final getIt = GetIt.instance;
     _savedData = getIt.get<Map<String, String>?>(instanceName: 'childData');
-    final getIt = GetIt.instance;
-
     childName = getIt.get<String?>(instanceName: 'savedChildName') ?? "Learner 1";
     _selectedAge = getIt.get<String?>(instanceName: 'childAge') ?? "Age 4-5";
+    _isDataChanged = false;
+    _isDataChanged = false;
   }
 
 
@@ -47,7 +48,7 @@ class _ForLearnersScreenState extends State<ForLearnersScreen> {
           Positioned(
             top: 16,
             left: 16,
-            child: IconButton(
+            child: const IconButton(
               icon: const Icon(Icons.arrow_back),
               onPressed: () => Navigator.of(context).pop(),
             ),
@@ -55,7 +56,7 @@ class _ForLearnersScreenState extends State<ForLearnersScreen> {
           Positioned(
             top: 16,
             right: 16,
-            child: ElevatedButton(
+            child:  ElevatedButton(
               onPressed: () {
                 Navigator.pushNamed(context, AppRoutes.parents);
               },
@@ -79,7 +80,7 @@ class _ForLearnersScreenState extends State<ForLearnersScreen> {
             builder: (context, width) {
               return Center(
                 child: Padding(
-                  child: Column(
+                  padding:const EdgeInsets.all(16.0),child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       _buildChildImage(),
@@ -90,7 +91,7 @@ class _ForLearnersScreenState extends State<ForLearnersScreen> {
                       const SizedBox(height: 20),
                       _buildAgeSelectionArea(),
                       const SizedBox(height: 20),
-                      ElevatedButton(
+                      const ElevatedButton(
                         onPressed: _isDataChanged ? _saveData : null,
                         child: const Text("Save"),
                       ),
@@ -100,15 +101,19 @@ class _ForLearnersScreenState extends State<ForLearnersScreen> {
                           style: TextStyle(fontSize: 16),
                         ),
                       if (_savedData != null) ...[
-                        Text("Child's Name: ${_savedData!['name'] ?? ''}"),
-                        Text("Selected Age: ${_savedData!['age'] ?? ''}"),
+                        if (_savedData!['name'] != null && _savedData!['name']!.isNotEmpty)
+                           Text("Child's Name: ${_savedData!['name']!}",style: const TextStyle(fontSize: 16),),
+                        if (_savedData!['age'] != null && _savedData!['age']!.isNotEmpty)
+                       Text("Selected Age: ${_savedData!['age']!}",style: const TextStyle(fontSize: 16),),
                       ],
                      ],
                   ),
-                )
+                ),
+
               );
 
             },
+
 
           )
         ],
@@ -120,35 +125,37 @@ class _ForLearnersScreenState extends State<ForLearnersScreen> {
   void _saveData() async {
     final getIt = GetIt.instance;
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    String savedName = getIt.get<String?>(instanceName: 'savedChildName') ?? "Learner 1";
-     String savedAge = getIt.get<String?>(instanceName: 'childAge') ?? "Age 4-5";
 
-    setState(() {
-      _isDataChanged = false;
-      _savedData = {
-        'name': childName,
-        'age': _selectedAge!,
-      };
+    String? savedName = getIt.get<String?>(instanceName: 'savedChildName');
+    String? savedAge = getIt.get<String?>(instanceName: 'childAge');
 
-      if (getIt.isRegistered<Map<String, String>>(instanceName: 'childData')) {
-        getIt.unregister<Map<String, String>>(instanceName: 'childData');
-      }
-      getIt.registerSingleton<Map<String, String>>(_savedData!, instanceName: 'childData');
+    bool nameChanged = savedName != childName;
+    bool ageChanged = savedAge != _selectedAge;
 
-      if (childName.isEmpty) {
-        childName = savedName;
-      }
+    if (nameChanged || ageChanged) {
+      setState(() {
+        _savedData = {
+          'name': childName,
+          'age': _selectedAge!,
+        };
 
-      if (_selectedAge == null) {
-        _selectedAge = savedAge;
-      }
-      prefs.setBool('isFirstTime', false);
-          getIt.registerSingleton<String>(childName,instanceName: 'savedChildName');
-        getIt.registerSingleton<String>(_selectedAge!,instanceName: 'childAge');
+        if (getIt.isRegistered<Map<String, String>>(instanceName: 'childData')) {
+          getIt.unregister<Map<String, String>>(instanceName: 'childData');
+        }
+        getIt.registerSingleton<Map<String, String>>(_savedData!, instanceName: 'childData');
+
+        prefs.setBool('isFirstTime', false);
+        getIt.registerSingleton<String>(childName, instanceName: 'savedChildName');
+        getIt.registerSingleton<String>(_selectedAge!, instanceName: 'childAge');
         _isDataChanged = false;
-        Navigator.pushNamed(context, AppRoutes.home); // Close the dialog
+        Navigator.pushNamed(context, AppRoutes.home);
       });
-    }
+    } else {
+      setState(() {
+        _isDataChanged = false;
+        Navigator.pushNamed(context, AppRoutes.home);
+      });
+      }
   }
   @override
   void dispose() {
@@ -159,32 +166,31 @@ class _ForLearnersScreenState extends State<ForLearnersScreen> {
  Widget _buildAgeSelectionArea() {
     final List<String> ageRanges = ["Age 4-5", "Age 6-7", "Age 7-8"]; 
      return  Wrap(
-      spacing: 10,
+      spacing: 8,
       children: ageRanges.map((ageRange) {
-        bool isSelected = _selectedAge == ageRange;
-        return GestureDetector(
+       bool isSelected = _selectedAge == ageRange;
+       return  GestureDetector(
           onTap: () {
-           setState(() {
-           
-               
-                
+            setState(() {
               if(_selectedAge != ageRange){
                  _isDataChanged = true;
               }
               _selectedAge = ageRange;
+            });
+           
             });
           },
           child: Container(
             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
             decoration: BoxDecoration(
               color: isSelected ? AppColors.secondaryColor : Colors.transparent,
-              border: Border.all(color: AppColors.primaryColor),
+                border: isSelected ? Border.all(color: AppColors.primaryColor):const Border(),
               borderRadius: BorderRadius.circular(25),
             ),
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Text(
+               Text(
                   ageRange,
                   style: TextStyle(
                     color: isSelected ? Colors.white : AppColors.primaryColor,
@@ -229,15 +235,10 @@ class _ForLearnersScreenState extends State<ForLearnersScreen> {
             TextButton(
               child: const Text("Save"),
               onPressed: () {
-                setState(() {
-                  if (_nameController.text.isNotEmpty) {
-                   
-                    setState(() {
-                        _isDataChanged = true;
-                      });
+                if (_nameController.text.isNotEmpty) {
+                    _isDataChanged = true;
                     childName = _nameController.text;
-                  }
-                });
+                }
                 Navigator.of(context).pop(); // Close the dialog
               },
             ),
@@ -273,7 +274,7 @@ class _ForLearnersScreenState extends State<ForLearnersScreen> {
               textAlign: TextAlign.center,
             ),
           ),
-          IconButton(
+        const  IconButton(
             icon: const Icon(Icons.edit, color: AppColors.primaryColor),
             onPressed: () {
               _nameController.text = childName;

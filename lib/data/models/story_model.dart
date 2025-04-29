@@ -17,6 +17,10 @@ class StoryModel extends Story with EquatableMixin{
     );
   }
 
+  Story toEntity() {
+    return Story(name: name, audioPath: audioPath);
+  }
+
   Map<String, dynamic> toJson() {
     return {
       'name': name,

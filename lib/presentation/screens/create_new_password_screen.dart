@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:learn_with_me/core/constants/app_assets.dart';
+
+import 'package:learn_with_me/presentation/routes/app_routes.dart';
 import 'package:learn_with_me/core/constants/app_colors.dart';
 import 'package:learn_with_me/presentation/widgets/responsive_widget.dart';
 
@@ -21,16 +22,9 @@ class _CreateNewPasswordScreenState extends State<CreateNewPasswordScreen> {
   Widget build(BuildContext context) {
     return ResponsiveWidget(builder: (context, size) {
       return Scaffold(
-        body: Container(
-          decoration: const BoxDecoration(
-            image: DecorationImage(
-              image: AssetImage(AppAssets.loginBackgroundImage),
-              fit: BoxFit.cover,
-            ),
-          ),
-          child: SingleChildScrollView(
+        body: SingleChildScrollView(
             child: Padding(
-              padding: const EdgeInsets.all(16.0),
+              padding: const EdgeInsets.all(10.0),
               child: Form(
                 key: _formKey,
                 child: Column(
@@ -50,8 +44,7 @@ class _CreateNewPasswordScreenState extends State<CreateNewPasswordScreen> {
                             },
                             child: const Text(
                               'Back',
-                              style:
-                                  TextStyle(color: Colors.black, fontFamily: 'Viga'),
+                              style: TextStyle(color: Colors.black, fontFamily: 'Viga'),
                             ),
                           ),
                         ],
@@ -59,14 +52,14 @@ class _CreateNewPasswordScreenState extends State<CreateNewPasswordScreen> {
                     ),
                     Center(
                       child: Padding(
-                        padding: EdgeInsets.only(top: size.height * 0.1, bottom: size.height * 0.02),
-                        child: Text(
+                        padding: EdgeInsets.only(top: size.height * 0.1, bottom: size.height * 0.03),
+                        child: const Text(
                           'Create a new password',
                           style: TextStyle(
                               fontSize: size.width * 0.07,
                               fontWeight: FontWeight.bold,
                               color: Colors.white,
-                            fontFamily: "Viga"
+                              fontFamily: "Viga",
                           ),
                         ),
                       ),
@@ -81,6 +74,7 @@ class _CreateNewPasswordScreenState extends State<CreateNewPasswordScreen> {
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(10.0),
                           ),
+                          
                           suffixIcon: IconButton(
                             icon: Icon(_passwordVisible
                                 ? Icons.visibility_off
@@ -93,6 +87,7 @@ class _CreateNewPasswordScreenState extends State<CreateNewPasswordScreen> {
                           ),
                         ),
                         controller: _passwordController,
+                        maxLines: 1,
                         obscureText: !_passwordVisible,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
@@ -114,6 +109,7 @@ class _CreateNewPasswordScreenState extends State<CreateNewPasswordScreen> {
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(10.0),
                           ),
+                           
                           suffixIcon: IconButton(
                             icon: Icon(_confirmPasswordVisible
                                 ? Icons.visibility_off
@@ -126,6 +122,7 @@ class _CreateNewPasswordScreenState extends State<CreateNewPasswordScreen> {
                           ),
                         ),
                         controller: _confirmPasswordController,
+                        maxLines: 1,
                         obscureText: !_confirmPasswordVisible,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
@@ -139,19 +136,19 @@ class _CreateNewPasswordScreenState extends State<CreateNewPasswordScreen> {
                     ),
                     Padding(
                       padding: EdgeInsets.only(top: size.height * 0.02),
-                      child: ElevatedButton(
+                      child: ElevatedButton(                      
                         onPressed: () {
                           if (_formKey.currentState!.validate()) {
                             Navigator.pushNamedAndRemoveUntil(
                               context,
-                              '/login',
+                              AppRoutes.login,
                               (route) => false,
                             );
                           }
                         },
-                         style: ElevatedButton.styleFrom(
-                           backgroundColor: Colors.green,
-                           fixedSize: Size(size.width * 0.9, size.height * 0.07),
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.green,
+                          fixedSize:  Size(size.width * 0.9, size.height * 0.07),
                           ),
                         child: const Text('Create Password',style: TextStyle(color: AppColors.primaryColor)),
                       ),
@@ -161,7 +158,7 @@ class _CreateNewPasswordScreenState extends State<CreateNewPasswordScreen> {
               ),
             ),
           ),
-        ),
+
       );
     });
   }

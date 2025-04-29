@@ -1,90 +1,110 @@
 import 'package:flutter/material.dart';
-import 'package:learn_with_me/core/constants/app_assets.dart';
-import 'package:learn_with_me/presentation/widgets/responsive_widget.dart';
+import 'package:learn_with_me/core/constants/app_colors.dart';
 import 'package:learn_with_me/presentation/routes/app_routes.dart';
+import 'package:learn_with_me/presentation/widgets/responsive_widget.dart';
 
 class ForgotPasswordScreen extends StatefulWidget {
   const ForgotPasswordScreen({Key? key}) : super(key: key);
 
   @override
-  State<ForgotPasswordScreen> createState() => _ForgotPasswordScreenState();
+  _ForgotPasswordScreenState createState() => _ForgotPasswordScreenState();
 }
 
 class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
-  final TextEditingController _emailController = TextEditingController();
+  final _formKey = GlobalKey<FormState>();
+  final _emailController = TextEditingController();
+
+  void _sendResetLink(BuildContext context) {
+    if (_formKey.currentState!.validate()) {
+      // TODO: Implement logic to send password reset link
+      // For now, just show a dialog
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: const Text('Reset Link Sent'),
+            content: Text('A password reset link has been sent to ${_emailController.text}.'),
+            actions: <Widget>[
+              TextButton(
+                child: const Text('OK'),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                  Navigator.pushReplacementNamed(context, AppRoutes.login);
+                  // Navigator.pushReplacementNamed(context, AppRoutes.login);
+                },
+              ),
+            ],
+          );
+        },
+      );
+    }
+  }
 
   @override
-  Widget build(BuildContext context) {return ResponsiveWidget(
+  Widget build(BuildContext context) {
+    return ResponsiveWidget(
       builder: (context, size) {
         return Scaffold(
-          body: Container(
-            decoration: BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage(AppAssets.loginBackgroundImage),
-                fit: BoxFit.cover,
-              ),
-            ),
-            child: Padding(
-              padding: const EdgeInsets.all(16.0),
+          appBar: AppBar(title: const Text('Forgot Password'),),
+          body: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Form(
+              key: _formKey,
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                 Padding(
-                    padding: EdgeInsets.only(
-                        top: size.height * 0.05, left: size.width * 0.04),
-                    child: Row(
-                      children: [
-                        ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.white,
-                              fixedSize: Size(size.width * 0.2, size.height * 0.05)),
-                          onPressed: () {
-                            Navigator.of(context).pop();
-                          },
-                          child: const Text(
-                            'Back',
-                            style: TextStyle(color: Colors.black, fontFamily: 'Viga'),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  const Text(
-                    'Enter your email',
-                    style: TextStyle(fontSize: 18),
-                  ),
-                  const SizedBox(height: 16),
-                  TextField(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  TextFormField(
                     controller: _emailController,
                     decoration: const InputDecoration(
                       labelText: 'Email',
                       border: OutlineInputBorder(),
                     ),
-                  ),
-                  const SizedBox(height: 24),
-                  ElevatedButton(
-                    onPressed: () {
-                      _sendResetLink(_emailController.text, context);
+                    keyboardType: TextInputType.emailAddress,
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter your email';
+                      }
+                      if (!RegExp(
+                              r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+                          .hasMatch(value)) {
+                        return 'Please enter a valid email';
+                      }
+                      return null;
                     },
-                    child: const Text('Send Reset Link'),
+                  ),
+                  const SizedBox(height: 20),
+                  ElevatedButton(
+                    onPressed: _sendResetLink,
+                    style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.green,
+                        fixedSize: Size(size.width * 0.9, size.height * 0.07)),
+                    child: const Text(
+                      'Send Reset Link',
+                      style: TextStyle(color: AppColors.primaryColor),
+                    ),
                   ),
                 ],
               ),
-                ),
-              ),
+            ),
+          ),
+          bottomNavigationBar: Padding(
+            padding: EdgeInsets.only(
+                top: size.height * 0.02,
+                left: size.width * 0.05,
+                bottom: size.height * 0.02),
+            child: Row(
+              children: [
+                TextButton(
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                    child: const Text("back")),
+              ],
+            ),
           ),
         );
       },
     );
   }
 
-  void _sendResetLink(String email, BuildContext context) {
-     if (email.isNotEmpty){
-        // Add your logic here to send reset link
-      } else {
-         ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-          content: Text("please enter your email!"),
-        ));
-    }
-  }
 }

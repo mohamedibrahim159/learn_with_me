@@ -1,9 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:learn_with_me/core/constants/app_assets.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:learn_with_me/domain/entities/letter.dart';
+import 'package:learn_with_me/core/services/audio_service.dart';
+import 'package:learn_with_me/presentation/blocs/letter_bloc.dart';
+import 'package:learn_with_me/presentation/blocs/letter_event.dart';
+import 'package:learn_with_me/presentation/blocs/letter_state.dart';
 import 'package:learn_with_me/presentation/widgets/responsive_widget.dart';
 
 class LettersScreen extends StatefulWidget {
-  const LettersScreen({Key? key}) : super(key: key);
+  final LetterBloc letterBloc;
+  final AudioService audioService;
+  const LettersScreen({Key? key, required this.letterBloc, required this.audioService}) : super(key: key);
 
 
   @override
@@ -18,12 +25,8 @@ class _LettersScreenState extends State<LettersScreen> {
   }
 
   @override
- 
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(AppLocalizations.of(context)!.letters),
-      ),
       body: BlocBuilder<LetterBloc, LetterState>(
         bloc: widget.letterBloc,
         builder: (context, state) {
@@ -31,31 +34,26 @@ class _LettersScreenState extends State<LettersScreen> {
             return const Center(
               child: CircularProgressIndicator(),
             );
-          } else if (state.errorMessage.isNotEmpty) { 
-            return Center(
+          } else if (state.errorMessage.isNotEmpty) {
+            return  Center(
               child: Text(state.errorMessage),
             );
-          } else if (state.letters.isEmpty) {
-          
-              return const Center(child: Text("No Data"),);
-          } else if (state.letters != null) {
+          }
+          else {
             return ResponsiveWidget(
               mobileWidget: Padding(
                   padding: const EdgeInsets.all(10.0),
-                  child: _buildList(state.letters!)),
+                  child: _buildList(state.letters)),
               tabletWidget: Padding(
-                  padding: const EdgeInsets.all(20.0),
-                  child: _buildGrid(state.letters!, 2)),
+                   padding: const EdgeInsets.all(20.0),
+                  child: _buildGrid(state.letters, 2)),
               desktopWidget: Padding(
                   padding: const EdgeInsets.all(20.0),
-                  child: _buildGrid(state.letters!, 3)),
+                  child: _buildGrid(state.letters, 3)),
             );
-          } else {
-            return const SizedBox();
           }
-        },
-      ),
-    );
+        }),
+      );
   }
 
   Widget _buildList(List<Letter> letters) {
@@ -64,10 +62,10 @@ class _LettersScreenState extends State<LettersScreen> {
         itemBuilder: (context, index) {
          final Letter letter = letters[index];
 
-          return ListTile(
-            title: Text(letter.name),
-            trailing: IconButton(
-              icon: const Icon(Icons.volume_up),
+          return  ListTile(
+            title:  Text(letter.letter,style: const TextStyle(fontSize: 20),),
+            trailing:  IconButton(
+               icon: const Icon(Icons.volume_up),
                 onPressed: () {
                 widget.audioService.playAudio(letter.audioPath);
               },
@@ -84,13 +82,15 @@ class _LettersScreenState extends State<LettersScreen> {
         itemBuilder: (context, index) {
           final Letter letter = letters[index];
           return Center(
-
-              child: IconButton(
-                  icon: const Icon(Icons.volume_up),
-                  onPressed: () {
-                    widget.audioService.playAudio(letter.audioPath);
-                  },
-                  label: Text(letter.name)));
+              child: Column(
+                children: [
+                  IconButton(
+                      icon: const Icon(Icons.volume_up),
+                      onPressed: () {
+                        widget.audioService.playAudio(letter.audioPath);
+                      }),
+                     Text(letter.letter)],
+              ));
         });
   }
 }

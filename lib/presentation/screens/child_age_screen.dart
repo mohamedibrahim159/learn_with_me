@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 import 'package:learn_with_me/core/constants/app_assets.dart';
 import 'package:learn_with_me/core/constants/app_colors.dart';
 import 'package:learn_with_me/core/utils/extensions/size_extention.dart';
-import 'package:get_it/get_it.dart';
-import '../routes/app_routes.dart';
-
+import 'package:learn_with_me/presentation/routes/app_routes.dart';
+import 'package:learn_with_me/presentation/widgets/responsive_widget.dart';
 class ChildAgeScreen extends StatefulWidget {
   const ChildAgeScreen({super.key});
 
@@ -21,14 +21,7 @@ class _ChildAgeScreenState extends State<ChildAgeScreen> {
       return Scaffold(
         extendBodyBehindAppBar: true,
         body: Container(
-            decoration: const BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage(AppAssets.childAgeBackgroundImage),
-                fit: BoxFit.cover,
-              ),
-            ),
             child: Padding(
-              padding: EdgeInsets.only(
                   left: size.width * 0.05, right: size.width * 0.05),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -55,7 +48,7 @@ class _ChildAgeScreenState extends State<ChildAgeScreen> {
                           },
                           child: const Text(
                             'Skip',
-                            style: TextStyle(
+                            style: const TextStyle(
                                 color: Colors.black, fontFamily: 'Viga'),
                           ),
                         ),
@@ -66,7 +59,7 @@ class _ChildAgeScreenState extends State<ChildAgeScreen> {
                     child: Padding(
                       padding: EdgeInsets.only(top: size.height * 0.35),
                       child: Text(
-                        "What age is your child ?",
+                        const "What age is your child ?",
                         textAlign: TextAlign.center,
                         style: TextStyle(
                           color: AppColors.orange,
@@ -86,7 +79,7 @@ class _ChildAgeScreenState extends State<ChildAgeScreen> {
                             child: ElevatedButton(
                                 onPressed: () => _selectAgeAndNavigate("4-5"),
                                 style: ageButtonStyle(size),
-                                child: const Text("4 - 5 years",
+                                child: const Text("4 - 5 years", 
                                     style: TextStyle(
                                         color: Colors.black,
                                         fontFamily: "Viga"))),
@@ -96,15 +89,14 @@ class _ChildAgeScreenState extends State<ChildAgeScreen> {
                             child: ElevatedButton(
                                 onPressed: () => _selectAgeAndNavigate("6-7"),
                                 style: ageButtonStyle(size),
-                                child: const Text("6 - 7 years",
+                                child: const Text("6 - 7 years", 
                                     style: TextStyle(
                                         color: Colors.black,
                                         fontFamily: "Viga"))),
                           ),
                          Padding(
                           padding: EdgeInsets.only(bottom: size.height * 0.02),
-                          child: ElevatedButton(
-                              onPressed: () => _goToIntroductionScreen("7-8"),
+                          child: ElevatedButton(   onPressed: () => _selectAgeAndNavigate("7-8"),                      
                               style: ageButtonStyle(size),
                               child: const Text("7 - 8 years",
                                   style: TextStyle(
@@ -120,13 +112,14 @@ class _ChildAgeScreenState extends State<ChildAgeScreen> {
                                 ),
                                 onPressed: () {
                                   if(_formKey.currentState!.validate()){
-                                  if(_selectedAge !=""){
+                                  if(_selectedAge.isNotEmpty){
                                      GetIt.I.registerSingleton<String>(_selectedAge, instanceName: 'childAge');
                                     Navigator.pushNamed(context, AppRoutes.introduction);
+                                    
                                   }
                                   }
                                 },
-                                child: const Text("Next",style: TextStyle(color: Colors.black,fontFamily: "Viga"),)),
+                                child: const Text("Next",style: const TextStyle(color: Colors.black,fontFamily: "Viga"),)),
                           )
                         ],
                       )),
@@ -153,6 +146,4 @@ class _ChildAgeScreenState extends State<ChildAgeScreen> {
     
     
   }
-
 }
-

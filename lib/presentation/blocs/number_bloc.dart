@@ -1,10 +1,10 @@
-import 'dart:async';
-
 import 'package:bloc/bloc.dart';
+import 'package:learn_with_me/presentation/blocs/number_state.dart';
 import 'package:equatable/equatable.dart';
-import 'package:learn_with_me/core/errors/failures.dart';
 import 'package:learn_with_me/core/usecases/usecase.dart';
 import 'package:learn_with_me/domain/entities/number.dart';
+import 'failures_bloc.dart';
+
 import '../../domain/usecases/get_numbers.dart';
 
 part 'number_event.dart';
@@ -21,7 +21,7 @@ class NumberBloc extends Bloc<NumberEvent, NumberState> {
       failureOrNumbers.fold((failure) {
         emit(state.copyWith(
           isLoading: false,
-          errorMessage: _mapFailureToMessage(failure),
+          errorMessage: mapFailureToMessage(failure),
         ));
       }, (numbers) {
         emit(state.copyWith(
@@ -31,16 +31,5 @@ class NumberBloc extends Bloc<NumberEvent, NumberState> {
         ));
       });
     });
-  }
-
-   String _mapFailureToMessage(Failure failure) {
-    switch (failure.runtimeType) {
-      case ServerFailure:
-        return 'Server Failure';
-      case CacheFailure:
-        return 'Cache Failure';
-      default:
-        return 'Unexpected Error';
-    }
   }
 }
